@@ -9,10 +9,10 @@ async function main() {
   // Create sample users
   console.log('Creating users...')
   const adminUser = await prisma.user.upsert({
-    where: { email: 'admin@haircrew.com' },
+    where: { email: 'admin@naazbookdepot.com' },
     update: {},
     create: {
-      email: 'admin@haircrew.com',
+      email: 'admin@naazbookdepot.com',
       name: 'Admin User',
       password: await hash('admin123', 12),
       role: 'ADMIN',
@@ -21,10 +21,10 @@ async function main() {
   })
 
   const customerUser = await prisma.user.upsert({
-    where: { email: 'customer@haircrew.com' },
+    where: { email: 'customer@naazbookdepot.com' },
     update: {},
     create: {
-      email: 'customer@haircrew.com',
+      email: 'customer@naazbookdepot.com',
       name: 'John Customer',
       password: await hash('customer123', 12),
       role: 'USER',
@@ -36,235 +36,235 @@ async function main() {
 
   // Create categories
   console.log('Creating categories...')
-  const shampooCategory = await prisma.category.upsert({
-    where: { slug: 'shampoo' },
+  const quranCategory = await prisma.category.upsert({
+    where: { slug: 'quran-tafseer' },
     update: {},
     create: {
-      name: 'Shampoo',
-      description: 'Professional hair care shampoos for all hair types',
-      slug: 'shampoo',
-      image: '/Images/c-shampoo.jpg',
+      name: 'Quran & Tafseer',
+      description: 'Authentic Qurans and comprehensive Tafseer collections',
+      slug: 'quran-tafseer',
+      image: '/Images/Tafseer Ibn Kathir.jpg',
       isActive: true,
     },
   })
 
-  const conditionerCategory = await prisma.category.upsert({
-    where: { slug: 'conditioner' },
+  const hadithCategory = await prisma.category.upsert({
+    where: { slug: 'hadith' },
     update: {},
     create: {
-      name: 'Conditioner',
-      description: 'Nourishing conditioners to keep your hair healthy and smooth',
-      slug: 'conditioner',
-      image: '/Images/c-conditioner.jpg',
+      name: 'Hadith Collections',
+      description: 'Classical and contemporary collections of Hadith',
+      slug: 'hadith',
+      image: '/Images/Sahih Al-Bukhari.jpg',
       isActive: true,
     },
   })
 
-  const treatmentCategory = await prisma.category.upsert({
-    where: { slug: 'treatment' },
+  const fiqhCategory = await prisma.category.upsert({
+    where: { slug: 'fiqh' },
     update: {},
     create: {
-      name: 'Treatment',
-      description: 'Specialized hair treatments for deep conditioning and repair',
-      slug: 'treatment',
-      image: '/Images/c-treatment.jpg',
+      name: 'Islamic Jurisprudence',
+      description: 'Books on Islamic law and jurisprudence (Fiqh)',
+      slug: 'fiqh',
+      image: '/Images/Riyadh as-Salihin.jpg',
       isActive: true,
     },
   })
 
   console.log('✅ Categories created')
 
-  // Create products for Shampoo category
-  console.log('Creating shampoo products...')
-  const shampooProducts = await Promise.all([
+  // Create products for Quran & Tafseer category
+  console.log('Creating Quran & Tafseer books...')
+  const quranProducts = await Promise.all([
     prisma.product.upsert({
-      where: { sku: 'SHAMPOO-001' },
+      where: { sku: 'QURAN-001' },
       update: {},
       create: {
-        name: 'Hydrating Shampoo',
-        description: 'Deeply hydrating shampoo for dry and damaged hair. Enriched with natural oils and vitamins.',
-        price: 24.99,
-        comparePrice: 29.99,
-        images: ['/Images/p1.jpg', '/Images/p2.jpg'],
-        sku: 'SHAMPOO-001',
-        barcode: '1234567890123',
-        weight: 250.00,
-        dimensions: '8x4x2 cm',
-        stock: 50,
-        isActive: true,
-        isFeatured: true,
-        slug: 'hydrating-shampoo',
-        categoryId: shampooCategory.id,
-      },
-    }),
-    prisma.product.upsert({
-      where: { sku: 'SHAMPOO-002' },
-      update: {},
-      create: {
-        name: 'Volumizing Shampoo',
-        description: 'Adds volume and body to fine, limp hair. Lightweight formula that won\'t weigh hair down.',
-        price: 22.99,
-        comparePrice: 27.99,
-        images: ['/Images/p2.jpg', '/Images/p3.jpg'],
-        sku: 'SHAMPOO-002',
-        barcode: '1234567890124',
-        weight: 250.00,
-        dimensions: '8x4x2 cm',
-        stock: 35,
-        isActive: true,
-        isFeatured: false,
-        slug: 'volumizing-shampoo',
-        categoryId: shampooCategory.id,
-      },
-    }),
-    prisma.product.upsert({
-      where: { sku: 'SHAMPOO-003' },
-      update: {},
-      create: {
-        name: 'Color-Protecting Shampoo',
-        description: 'Sulfate-free shampoo that preserves hair color and prevents fading.',
-        price: 26.99,
-        comparePrice: 31.99,
-        images: ['/Images/p3.jpg', '/Images/p1.jpg'],
-        sku: 'SHAMPOO-003',
-        barcode: '1234567890125',
-        weight: 250.00,
-        dimensions: '8x4x2 cm',
-        stock: 40,
-        isActive: true,
-        isFeatured: true,
-        slug: 'color-protecting-shampoo',
-        categoryId: shampooCategory.id,
-      },
-    }),
-  ])
-
-  // Create products for Conditioner category
-  console.log('Creating conditioner products...')
-  const conditionerProducts = await Promise.all([
-    prisma.product.upsert({
-      where: { sku: 'COND-001' },
-      update: {},
-      create: {
-        name: 'Moisturizing Conditioner',
-        description: 'Intensive moisture conditioner for dry and damaged hair. Leaves hair soft and manageable.',
-        price: 26.99,
-        comparePrice: 31.99,
-        images: ['/Images/p1.jpg', '/Images/p2.jpg'],
-        sku: 'COND-001',
-        barcode: '1234567890126',
-        weight: 250.00,
-        dimensions: '8x4x2 cm',
-        stock: 45,
-        isActive: true,
-        isFeatured: true,
-        slug: 'moisturizing-conditioner',
-        categoryId: conditionerCategory.id,
-      },
-    }),
-    prisma.product.upsert({
-      where: { sku: 'COND-002' },
-      update: {},
-      create: {
-        name: 'Smoothing Conditioner',
-        description: 'Anti-frizz conditioner that smooths hair cuticles and reduces frizz.',
-        price: 24.99,
-        comparePrice: 29.99,
-        images: ['/Images/p2.jpg', '/Images/p3.jpg'],
-        sku: 'COND-002',
-        barcode: '1234567890127',
-        weight: 250.00,
-        dimensions: '8x4x2 cm',
-        stock: 30,
-        isActive: true,
-        isFeatured: false,
-        slug: 'smoothing-conditioner',
-        categoryId: conditionerCategory.id,
-      },
-    }),
-    prisma.product.upsert({
-      where: { sku: 'COND-003' },
-      update: {},
-      create: {
-        name: 'Strengthening Conditioner',
-        description: 'Protein-rich conditioner that strengthens hair and reduces breakage.',
-        price: 28.99,
-        comparePrice: 33.99,
-        images: ['/Images/p3.jpg', '/Images/p1.jpg'],
-        sku: 'COND-003',
-        barcode: '1234567890128',
-        weight: 250.00,
-        dimensions: '8x4x2 cm',
-        stock: 25,
-        isActive: true,
-        isFeatured: true,
-        slug: 'strengthening-conditioner',
-        categoryId: conditionerCategory.id,
-      },
-    }),
-  ])
-
-  // Create products for Treatment category
-  console.log('Creating treatment products...')
-  const treatmentProducts = await Promise.all([
-    prisma.product.upsert({
-      where: { sku: 'TREAT-001' },
-      update: {},
-      create: {
-        name: 'Deep Conditioning Mask',
-        description: 'Intensive deep conditioning treatment for severely damaged hair.',
-        price: 34.99,
-        comparePrice: 39.99,
-        images: ['/Images/p1.jpg', '/Images/p2.jpg'],
-        sku: 'TREAT-001',
-        barcode: '1234567890129',
-        weight: 200.00,
-        dimensions: '8x4x2 cm',
+        name: 'Tafseer Ibn Kathir',
+        description: 'A renowned and comprehensive commentary on the Quran by Ibn Kathir.',
+        price: 49.99,
+        comparePrice: 59.99,
+        images: ['/Images/Tafseer Ibn Kathir.jpg'],
+        sku: 'QURAN-001',
+        barcode: '9789383226395',
+        weight: 1200.00,
+        dimensions: '24x16x6 cm',
         stock: 20,
         isActive: true,
         isFeatured: true,
-        slug: 'deep-conditioning-mask',
-        categoryId: treatmentCategory.id,
+        slug: 'tafseer-ibn-kathir',
+        categoryId: quranCategory.id,
       },
     }),
     prisma.product.upsert({
-      where: { sku: 'TREAT-002' },
+      where: { sku: 'QURAN-002' },
       update: {},
       create: {
-        name: 'Hair Repair Serum',
-        description: 'Lightweight serum that repairs split ends and prevents further damage.',
+        name: 'The Noble Quran',
+        description: 'A clear and accurate English translation of the Quran with commentary.',
         price: 29.99,
-        comparePrice: 34.99,
-        images: ['/Images/p2.jpg', '/Images/p3.jpg'],
-        sku: 'TREAT-002',
-        barcode: '1234567890130',
-        weight: 100.00,
-        dimensions: '6x3x2 cm',
+        comparePrice: 39.99,
+        images: ['/Images/About Naaz Book Depot.jpg'],
+        sku: 'QURAN-002',
+        barcode: '9789960740796',
+        weight: 900.00,
+        dimensions: '22x15x4 cm',
         stock: 30,
         isActive: true,
         isFeatured: false,
-        slug: 'hair-repair-serum',
-        categoryId: treatmentCategory.id,
+        slug: 'the-noble-quran',
+        categoryId: quranCategory.id,
       },
     }),
     prisma.product.upsert({
-      where: { sku: 'TREAT-003' },
+      where: { sku: 'QURAN-003' },
       update: {},
       create: {
-        name: 'Scalp Treatment',
-        description: 'Soothing scalp treatment that reduces dandruff and promotes healthy hair growth.',
-        price: 32.99,
-        comparePrice: 37.99,
-        images: ['/Images/p3.jpg', '/Images/p1.jpg'],
-        sku: 'TREAT-003',
-        barcode: '1234567890131',
-        weight: 150.00,
-        dimensions: '7x4x2 cm',
+        name: 'Quran (Arabic)',
+        description: 'The Holy Quran in Arabic script, Uthmani print.',
+        price: 19.99,
+        comparePrice: 24.99,
+        images: ['/Images/Image+Background.jpg'],
+        sku: 'QURAN-003',
+        barcode: '9788172315629',
+        weight: 700.00,
+        dimensions: '20x14x3 cm',
+        stock: 40,
+        isActive: true,
+        isFeatured: false,
+        slug: 'quran-arabic',
+        categoryId: quranCategory.id,
+      },
+    }),
+  ])
+
+  // Create products for Hadith category
+  console.log('Creating Hadith books...')
+  const hadithProducts = await Promise.all([
+    prisma.product.upsert({
+      where: { sku: 'HADITH-001' },
+      update: {},
+      create: {
+        name: 'Sahih Al-Bukhari',
+        description: 'The most authentic collection of Hadith compiled by Imam Bukhari.',
+        price: 59.99,
+        comparePrice: 69.99,
+        images: ['/Images/Sahih Al-Bukhari.jpg'],
+        sku: 'HADITH-001',
+        barcode: '9788172315628',
+        weight: 1500.00,
+        dimensions: '25x17x7 cm',
         stock: 15,
         isActive: true,
         isFeatured: true,
-        slug: 'scalp-treatment',
-        categoryId: treatmentCategory.id,
+        slug: 'sahih-al-bukhari',
+        categoryId: hadithCategory.id,
+      },
+    }),
+    prisma.product.upsert({
+      where: { sku: 'HADITH-002' },
+      update: {},
+      create: {
+        name: 'Riyadh as-Salihin',
+        description: 'A famous collection of authentic Hadith compiled by Imam Nawawi.',
+        price: 34.99,
+        comparePrice: 44.99,
+        images: ['/Images/Riyadh as-Salihin.jpg'],
+        sku: 'HADITH-002',
+        barcode: '9788172315630',
+        weight: 1000.00,
+        dimensions: '22x15x5 cm',
+        stock: 25,
+        isActive: true,
+        isFeatured: false,
+        slug: 'riyadh-as-salihin',
+        categoryId: hadithCategory.id,
+      },
+    }),
+    prisma.product.upsert({
+      where: { sku: 'HADITH-003' },
+      update: {},
+      create: {
+        name: 'Forty Hadith Qudsi',
+        description: 'A collection of 40 sacred Hadith Qudsi with English translation.',
+        price: 14.99,
+        comparePrice: 19.99,
+        images: ['/Images/About Naaz Book Depot.jpg'],
+        sku: 'HADITH-003',
+        barcode: '9788172315631',
+        weight: 400.00,
+        dimensions: '18x12x2 cm',
+        stock: 35,
+        isActive: true,
+        isFeatured: false,
+        slug: 'forty-hadith-qudsi',
+        categoryId: hadithCategory.id,
+      },
+    }),
+  ])
+
+  // Create products for Fiqh category
+  console.log('Creating Fiqh books...')
+  const fiqhProducts = await Promise.all([
+    prisma.product.upsert({
+      where: { sku: 'FIQH-001' },
+      update: {},
+      create: {
+        name: 'Fiqh-us-Sunnah',
+        description: 'A comprehensive manual of Islamic jurisprudence by Sayyid Sabiq.',
+        price: 44.99,
+        comparePrice: 54.99,
+        images: ['/Images/About Naaz Book Depot.jpg'],
+        sku: 'FIQH-001',
+        barcode: '9788172315632',
+        weight: 1100.00,
+        dimensions: '23x15x5 cm',
+        stock: 18,
+        isActive: true,
+        isFeatured: true,
+        slug: 'fiqh-us-sunnah',
+        categoryId: fiqhCategory.id,
+      },
+    }),
+    prisma.product.upsert({
+      where: { sku: 'FIQH-002' },
+      update: {},
+      create: {
+        name: 'Bulugh al-Maram',
+        description: 'A classic collection of hadiths related to Islamic jurisprudence by Ibn Hajar al-Asqalani.',
+        price: 24.99,
+        comparePrice: 29.99,
+        images: ['/Images/About Naaz Book Depot.jpg'],
+        sku: 'FIQH-002',
+        barcode: '9788172315633',
+        weight: 800.00,
+        dimensions: '21x14x4 cm',
+        stock: 22,
+        isActive: true,
+        isFeatured: false,
+        slug: 'bulugh-al-maram',
+        categoryId: fiqhCategory.id,
+      },
+    }),
+    prisma.product.upsert({
+      where: { sku: 'FIQH-003' },
+      update: {},
+      create: {
+        name: 'Al-Muwatta',
+        description: 'The earliest written collection of hadith comprising the subjects of Islamic law by Imam Malik.',
+        price: 29.99,
+        comparePrice: 34.99,
+        images: ['/Images/About Naaz Book Depot.jpg'],
+        sku: 'FIQH-003',
+        barcode: '9788172315634',
+        weight: 900.00,
+        dimensions: '20x13x3 cm',
+        stock: 20,
+        isActive: true,
+        isFeatured: false,
+        slug: 'al-muwatta',
+        categoryId: fiqhCategory.id,
       },
     }),
   ])
@@ -273,8 +273,7 @@ async function main() {
 
   // Create sample reviews
   console.log('Creating sample reviews...')
-  const allProducts = [...shampooProducts, ...conditionerProducts, ...treatmentProducts]
-  
+  const allProducts = [...quranProducts, ...hadithProducts, ...fiqhProducts]
   for (const product of allProducts) {
     await prisma.review.upsert({
       where: {
@@ -288,8 +287,8 @@ async function main() {
         userId: customerUser.id,
         productId: product.id,
         rating: Math.floor(Math.random() * 3) + 3, // Random rating between 3-5
-        title: `Great ${product.name}`,
-        comment: `I love this ${product.name.toLowerCase()}. It works wonders for my hair!`,
+        title: `Excellent read: ${product.name}`,
+        comment: `This book, ${product.name}, is a must-have for every home library. Highly recommended!`,
         isVerified: true,
       },
     })
@@ -300,7 +299,7 @@ async function main() {
   console.log('🎉 Database seeding completed successfully!')
   console.log(`📊 Created:`)
   console.log(`   - ${2} users (admin + customer)`)
-  console.log(`   - ${3} categories (shampoo, conditioner, treatment)`)
+  console.log(`   - ${3} categories (Quran & Tafseer, Hadith Collections, Islamic Jurisprudence)`)
   console.log(`   - ${9} products (3 per category)`)
   console.log(`   - ${9} reviews`)
 }

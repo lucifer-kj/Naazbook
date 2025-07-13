@@ -1,5 +1,6 @@
 "use client"
 
+import React, { useState, useRef } from "react";
 import Link from "next/link"
 import { Search, ShoppingCart, User as UserIcon } from "lucide-react"
 import { useCartStore } from "@/store/cart-store"
@@ -10,7 +11,40 @@ import Image from "next/image";
 export function Header() {
   const { getCount } = useCartStore();
   const cartCount = getCount();
-  // Remove all references to 'scrolled'
+  const [productsOpen, setProductsOpen] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Mouse leave for both button and menu
+  const handleMouseLeave = () => {
+    setTimeout(() => {
+      const button = buttonRef.current;
+      const menu = menuRef.current;
+      const active = document.activeElement;
+      if (
+        button && !button.contains(active) &&
+        menu && !menu.matches(':hover')
+      ) {
+        setProductsOpen(false);
+      }
+    }, 80);
+  };
+
+  // Blur handler for button
+  const handleBlur = () => {
+    setTimeout(() => {
+      const button = buttonRef.current;
+      const menu = menuRef.current;
+      const active = document.activeElement;
+      if (
+        button && !button.contains(active) &&
+        menu && !menu.matches(':hover')
+      ) {
+        setProductsOpen(false);
+      }
+    }, 80);
+  };
+
   return (
     <>
       <motion.header
@@ -32,9 +66,25 @@ export function Header() {
           {/* Navigation Links */}
           <nav className="hidden lg:flex items-center gap-8 mx-8">
             <Link href="/" className="nav-link">Home</Link>
-            <div className="relative group">
-              <button className="nav-link flex items-center gap-1 focus:outline-none">Products <span className="ml-1">▼</span></button>
-              <div className="absolute left-0 top-full mt-2 bg-white border border-[var(--islamic-green)]/20 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition z-20 min-w-[180px]">
+            <div className="relative" onMouseLeave={handleMouseLeave}>
+              <button
+                ref={buttonRef}
+                className="nav-link flex items-center gap-1 focus:outline-none"
+                onMouseEnter={() => setProductsOpen(true)}
+                onFocus={() => setProductsOpen(true)}
+                onBlur={handleBlur}
+                aria-haspopup="true"
+                aria-expanded={productsOpen}
+              >
+                Products <span className="ml-1">▼</span>
+              </button>
+              <div
+                ref={menuRef}
+                className={`absolute left-0 top-full mt-2 bg-white border border-[var(--islamic-green)]/20 rounded-lg shadow-lg transition z-20 min-w-[180px] ${productsOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+                onMouseEnter={() => setProductsOpen(true)}
+                onMouseLeave={handleMouseLeave}
+                tabIndex={-1}
+              >
                 <ul className="py-2">
                   <li><Link href="/categories/shampoo" className="block px-4 py-2 text-[var(--islamic-green)] hover:bg-[var(--islamic-gold)]/10">Quran & Tafseer</Link></li>
                   <li><Link href="/categories/conditioner" className="block px-4 py-2 text-[var(--islamic-green)] hover:bg-[var(--islamic-gold)]/10">Hadith Collections</Link></li>

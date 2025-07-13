@@ -9,19 +9,19 @@ export default function ContactPage() {
     {
       icon: Mail,
       title: "Email",
-      details: "support@haircrew.com",
+      details: "naazgroupofficial@gmail.com",
       description: "We&apos;ll respond within 24 hours"
     },
     {
       icon: Phone,
       title: "Phone",
-      details: "+91 98765 43210",
-      description: "Mon-Fri from 9am to 6pm"
+      details: "+91 91634 31395",
+      description: "Mon-Sat from 9am to 8pm"
     },
     {
       icon: MapPin,
       title: "Address",
-      details: "123 Hair Street, Beauty City, BC 12345",
+      details: "Kolkata, West Bengal, India",
       description: "Visit our store"
     },
     {

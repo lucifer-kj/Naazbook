@@ -9,6 +9,7 @@ import ClientRoot from "@/components/providers/client-root";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import AnimatedLayoutClient from "@/components/providers/animated-layout-client";
 import RoutePrefetcher from "@/components/providers/route-prefetch";
+import StagewiseToolbarClient from '@/components/providers/stagewise-toolbar-client';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,14 +24,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "HairCrew - Professional Hair Care Products",
-  description: "Your trusted partner for professional hair care products. Quality, innovation, and beauty in every bottle.",
+  title: "Naaz Book Depot - Authentic Islamic Books & Publishing",
+  description: "A pioneering publishing company since 1967, specializing in authentic Islamic literature and the Qur'an in multiple languages, serving the global Muslim community.",
   // Improve SEO and sharing
   openGraph: {
     type: "website",
-    title: "HairCrew - Professional Hair Care Products",
-    description: "Your trusted partner for professional hair care products. Quality, innovation, and beauty in every bottle.",
-    siteName: "HairCrew",
+    title: "Naaz Book Depot - Authentic Islamic Books & Publishing",
+    description: "A pioneering publishing company since 1967, specializing in authentic Islamic literature and the Qur'an in multiple languages, serving the global Muslim community.",
+    siteName: "Naaz Book Depot",
   },
 };
 
@@ -57,6 +58,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <StagewiseToolbarClient />
         <AuthProvider>
           <ClientRoot>
             <div className="min-h-screen flex flex-col">
