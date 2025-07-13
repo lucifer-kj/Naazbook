@@ -2,15 +2,15 @@
   "version": 1,
   "functions": {
     "/api/categories": {},
-    "/api/auth/register": {},
-    "/api/order/history": {},
-    "/api/products/[slug]/related": {},
-    "/api/products/[slug]": {},
-    "/api/products/[slug]/reviews": {},
     "/api/order": {},
+    "/api/products/[slug]/related": {},
+    "/api/products/[slug]/reviews": {},
+    "/api/products/[slug]": {},
     "/api/products/latest": {},
     "/api/products": {},
+    "/api/user/addresses": {},
     "/api/user/wishlist": {},
-    "/api/user/addresses": {}
+    "/api/auth/register": {},
+    "/api/order/history": {}
   }
 }

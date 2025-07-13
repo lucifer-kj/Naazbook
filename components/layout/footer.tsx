@@ -70,9 +70,9 @@ export function Footer() {
             <span className="text-[var(--islamic-gold)]">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</span>
           </div>
           <div className="flex flex-wrap gap-4">
-            <Link href="/privacy">Privacy Policy</Link>
-            <Link href="/terms">Terms of Service</Link>
-            <Link href="/shipping">Shipping Info</Link>
+            {/* <Link href="/privacy">Privacy Policy</Link> */}
+            {/* <Link href="/terms">Terms of Service</Link> */}
+            {/* <Link href="/shipping">Shipping Info</Link> */}
           </div>
         </div>
         {/* Floating Back-to-Top Button */}
