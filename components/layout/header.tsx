@@ -1,12 +1,13 @@
-"use client"
+// 'use client' must be first
+"use client";
 
-import React, { useState, useRef } from "react";
-import Link from "next/link"
-import { Search, ShoppingCart, User as UserIcon } from "lucide-react"
-import { useCartStore } from "@/store/cart-store"
-import { motion } from "framer-motion"
+import Link from "next/link";
+import { Search, ShoppingCart, User as UserIcon, LogOut, Settings } from "lucide-react";
+import { useCartStore } from "@/store/cart-store";
+import { motion } from "framer-motion";
 import Image from "next/image";
-
+import { useSession, signOut } from "next-auth/react";
+import { useState, useRef } from "react";
 
 export function Header() {
   const { getCount } = useCartStore();
@@ -14,6 +15,7 @@ export function Header() {
   const [productsOpen, setProductsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { data: session } = useSession();
 
   // Mouse leave for both button and menu
   const handleMouseLeave = () => {
@@ -23,7 +25,7 @@ export function Header() {
       const active = document.activeElement;
       if (
         button && !button.contains(active) &&
-        menu && !menu.matches(':hover')
+        menu && !menu.matches(":hover")
       ) {
         setProductsOpen(false);
       }
@@ -38,7 +40,7 @@ export function Header() {
       const active = document.activeElement;
       if (
         button && !button.contains(active) &&
-        menu && !menu.matches(':hover')
+        menu && !menu.matches(":hover")
       ) {
         setProductsOpen(false);
       }
@@ -48,7 +50,7 @@ export function Header() {
   return (
     <>
       <motion.header
-        className={`bg-[#F8F6F3] sticky top-0 z-50 transition-shadow border-b border-[var(--islamic-green)]/10`}
+        className="bg-[#F8F6F3] sticky top-0 z-50 transition-shadow border-b border-[var(--islamic-green)]/10"
         initial={false}
         animate={{ boxShadow: "0 0px 0px 0 rgba(0,0,0,0)" }}
         transition={{ duration: 0.2 }}
@@ -80,15 +82,15 @@ export function Header() {
               </button>
               <div
                 ref={menuRef}
-                className={`absolute left-0 top-full mt-2 bg-white border border-[var(--islamic-green)]/20 rounded-lg shadow-lg transition z-20 min-w-[180px] ${productsOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+                className={`absolute left-0 top-full mt-2 bg-white border border-[var(--islamic-green)]/20 rounded-lg shadow-lg transition z-20 min-w-[180px] ${productsOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
                 onMouseEnter={() => setProductsOpen(true)}
                 onMouseLeave={handleMouseLeave}
                 tabIndex={-1}
               >
                 <ul className="py-2">
-                  <li><Link href="/categories/shampoo" className="block px-4 py-2 text-[var(--islamic-green)] hover:bg-[var(--islamic-gold)]/10">Quran & Tafseer</Link></li>
-                  <li><Link href="/categories/conditioner" className="block px-4 py-2 text-[var(--islamic-green)] hover:bg-[var(--islamic-gold)]/10">Hadith Collections</Link></li>
-                  <li><Link href="/categories/treatment" className="block px-4 py-2 text-[var(--islamic-green)] hover:bg-[var(--islamic-gold)]/10">Islamic Jurisprudence</Link></li>
+                  <li><Link href="/categories/quraan" className="block px-4 py-2 text-[var(--islamic-green)] hover:bg-[var(--islamic-gold)]/10">Quran & Tafseer</Link></li>
+                  <li><Link href="/categories/hadith" className="block px-4 py-2 text-[var(--islamic-green)] hover:bg-[var(--islamic-gold)]/10">Hadith Collections</Link></li>
+                  <li><Link href="/categories/jurisprudence" className="block px-4 py-2 text-[var(--islamic-green)] hover:bg-[var(--islamic-gold)]/10">Islamic Jurisprudence</Link></li>
                   <li><Link href="/categories/history" className="block px-4 py-2 text-[var(--islamic-green)] hover:bg-[var(--islamic-gold)]/10">Islamic History</Link></li>
                   <li><Link href="/categories/children" className="block px-4 py-2 text-[var(--islamic-green)] hover:bg-[var(--islamic-gold)]/10">Children&apos;s Books</Link></li>
                   <li><Link href="/categories/urdu" className="block px-4 py-2 text-[var(--islamic-green)] hover:bg-[var(--islamic-gold)]/10">Urdu Literature</Link></li>
@@ -110,7 +112,40 @@ export function Header() {
                 </span>
               )}
             </Link>
-            <Link href="/dashboard/profile" className="p-2 text-[var(--islamic-green)] hover:text-[var(--islamic-gold)]"><UserIcon className="w-6 h-6" /></Link>
+            {session ? (
+              <div className="relative group">
+                <button className="flex items-center gap-2 p-2 text-[var(--islamic-green)] hover:text-[var(--islamic-gold)]">
+                  <UserIcon className="w-5 h-5" />
+                  <span className="hidden md:block font-semibold">{session.user?.name || "User"}</span>
+                  <span className="text-xs">▼</span>
+                </button>
+                <div className="absolute right-0 top-full mt-2 bg-white border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-50">
+                  <div className="p-3 border-b">
+                    <p className="font-medium">{session.user?.name || "User"}</p>
+                    <p className="text-sm text-gray-500">{session.user?.email || ""}</p>
+                  </div>
+                  <div className="p-2">
+                    <Link href="/dashboard" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 rounded">
+                      <UserIcon className="w-4 h-4" />
+                      Dashboard
+                    </Link>
+                    <Link href="/dashboard/profile" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 rounded">
+                      <Settings className="w-4 h-4" />
+                      Profile
+                    </Link>
+                    <button
+                      onClick={() => signOut({ callbackUrl: "/" })}
+                      className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 rounded w-full text-left text-red-600"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <Link href="/auth/signin" className="p-2 text-[var(--islamic-green)] hover:text-[var(--islamic-gold)]"><UserIcon className="w-6 h-6" /></Link>
+            )}
           </div>
         </div>
       </motion.header>

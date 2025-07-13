@@ -2,7 +2,7 @@ export const runtime = 'nodejs'
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
-import { OrderStatus, PaymentStatus } from "@prisma/client"
+import { OrderStatus, PaymentStatus } from "@prisma/client";
 
 interface OrderItem {
   id: string
@@ -26,6 +26,13 @@ function generateOrderNumber() {
 }
 
 export async function POST(req: NextRequest) {
+  // CSRF validation (redundant with middleware, but double-check for defense-in-depth)
+  const csrfHeader = req.headers.get('x-csrf-token');
+  const csrfCookieObj = req.cookies.get('__Host-next-auth.csrf-token');
+  const csrfCookie = csrfCookieObj ? csrfCookieObj.value : undefined;
+  if (!csrfHeader || !csrfCookie || csrfHeader !== csrfCookie) {
+    return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+  }
   try {
     const session = await auth()
     if (!session?.user?.id) {
@@ -51,14 +58,14 @@ export async function POST(req: NextRequest) {
     const shippingFee = 0 // You can add logic for shipping fee
     const total = subtotal + shippingFee
     // Map status
-    let orderStatus: OrderStatus = OrderStatus.PENDING
-    let paymentStatus: PaymentStatus = PaymentStatus.PENDING
+    let orderStatus: OrderStatus = OrderStatus.PENDING;
+    let paymentStatus: PaymentStatus = PaymentStatus.PENDING;
     if (status === "pending") {
-      orderStatus = OrderStatus.PENDING
-      paymentStatus = PaymentStatus.PENDING
+      orderStatus = OrderStatus.PENDING;
+      paymentStatus = PaymentStatus.PENDING;
     } else if (status === "payment_pending_confirmation") {
-      orderStatus = OrderStatus.PENDING
-      paymentStatus = PaymentStatus.PENDING
+      orderStatus = OrderStatus.PENDING;
+      paymentStatus = PaymentStatus.PENDING;
     }
     // Save order
     const order = await prisma.order.create({
