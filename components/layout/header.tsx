@@ -55,10 +55,10 @@ export function Header() {
       >
         <div className="container mx-auto px-4 flex items-center h-24 justify-between">
           {/* Logo and Brand */}
-          <Link href="/" className="flex items-center gap-4 group">
+          <Link href="/" className="flex items-center gap-4">
             <Image src="/Images/Naaz Book Depot Logo.svg" alt="Naaz Book Depot Logo" width={48} height={48} className="h-12 w-12" />
             <div className="flex flex-col">
-              <span className="text-3xl font-headings font-bold text-[var(--islamic-green)] leading-tight group-hover:opacity-80 transition">Naaz Book Depot</span>
+              <span className="text-3xl font-headings font-bold text-[var(--islamic-green)] leading-tight transition">Naaz Book Depot</span>
               <span className="text-xs text-[var(--islamic-green)]/80 -mt-1">Publishing the Light of Knowledge</span>
             </div>
           </Link>
