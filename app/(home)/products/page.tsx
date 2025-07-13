@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight, Search, X } from "lucide-react"
+import { ChevronLeft, ChevronRight, Search, X, Filter, ChevronDown } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import ProductCard from "@/components/product-card"
@@ -43,6 +43,7 @@ export default function ProductsPage() {
   const { data: session } = useSession()
   const [wishlist, setWishlist] = useState<string[]>([])
   const [wishlistLoading, setWishlistLoading] = useState<string | null>(null)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Check for search parameter from header redirect
   useEffect(() => {
@@ -127,10 +128,37 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-4 gap-8 min-h-screen">
-      {/* Sidebar */}
-      <aside className="md:col-span-1 bg-white rounded-lg shadow p-6 h-fit">
-        <h2 className="text-xl font-bold mb-4">Categories</h2>
+    <div className="container mx-auto px-4 py-8 min-h-screen">
+      {/* Mobile Filter Button */}
+      <div className="lg:hidden mb-6">
+        <Button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          variant="outline"
+          className="w-full flex items-center justify-center gap-2"
+        >
+          <Filter className="w-4 h-4" />
+          Filters & Categories
+          <ChevronDown className={`w-4 h-4 transition-transform ${sidebarOpen ? 'rotate-180' : ''}`} />
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        {/* Sidebar - Hidden on mobile unless toggled */}
+        <aside className={`lg:col-span-1 bg-white rounded-lg shadow p-6 h-fit transition-all duration-300 ${
+          sidebarOpen ? 'block' : 'hidden lg:block'
+        }`}>
+          <div className="flex items-center justify-between mb-4 lg:hidden">
+            <h2 className="text-xl font-bold">Filters</h2>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+          
+          <h2 className="text-xl font-bold mb-4 hidden lg:block">Categories</h2>
         <ul className="space-y-2 mb-6">
           <li>
             <button
@@ -181,10 +209,10 @@ export default function ProductsPage() {
       </aside>
 
       {/* Main Content */}
-      <main className="md:col-span-3">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
+        <main className="lg:col-span-3">
+          <div className="flex flex-col gap-4 mb-6">
           <div>
-            <h1 className="text-3xl font-bold">Products</h1>
+              <h1 className="text-2xl md:text-3xl font-bold">Products</h1>
             <p className="text-gray-600 mt-1">
               {loading ? "Loading..." : `${total} product${total !== 1 ? 's' : ''} found`}
               {search && (
@@ -194,15 +222,17 @@ export default function ProductsPage() {
               )}
             </p>
           </div>
-          <div className="flex gap-2">
-            <form onSubmit={handleSearch} className="relative">
+            
+            {/* Search and Sort - Stack on mobile */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <form onSubmit={handleSearch} className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
                 type="search"
                 placeholder="Search products..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="pl-10 pr-10 max-w-xs"
+                  className="pl-10 pr-10"
               />
               {search && (
                 <Button
@@ -217,7 +247,7 @@ export default function ProductsPage() {
               )}
             </form>
             <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-40">
+                <SelectTrigger className="w-full sm:w-40">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
@@ -235,7 +265,7 @@ export default function ProductsPage() {
         {/* Search Results Summary */}
         {search && (
           <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-            <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
               <span className="text-sm text-blue-800">
                 Showing results for: <strong>&quot;{search}&quot;</strong>
               </span>
@@ -243,7 +273,7 @@ export default function ProductsPage() {
                 variant="ghost"
                 size="sm"
                 onClick={clearSearch}
-                className="text-blue-600 hover:text-blue-800"
+                  className="text-blue-600 hover:text-blue-800 self-start sm:self-center"
               >
                 Clear search
               </Button>
@@ -251,8 +281,8 @@ export default function ProductsPage() {
           </div>
         )}
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {/* Product Grid - Responsive */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mb-8">
           {loading ? (
             <div className="col-span-full text-center text-gray-500 py-12">Loading products...</div>
           ) : products.length === 0 ? (
@@ -271,46 +301,49 @@ export default function ProductsPage() {
           )}
         </div>
 
-        {/* Pagination */}
+          {/* Pagination - Mobile Responsive */}
         {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-2">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
             <Button
               variant="outline"
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
+                className="w-full sm:w-auto"
             >
               <ChevronLeft className="w-4 h-4" />
               Previous
             </Button>
             
+              <div className="flex flex-wrap justify-center gap-1">
             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-              let pageNum
+                  let pageNum: number;
               if (totalPages <= 5) {
-                pageNum = i + 1
+                    pageNum = i + 1;
               } else if (currentPage <= 3) {
-                pageNum = i + 1
+                    pageNum = i + 1;
               } else if (currentPage >= totalPages - 2) {
-                pageNum = totalPages - 4 + i
+                    pageNum = totalPages - 4 + i;
               } else {
-                pageNum = currentPage - 2 + i
+                    pageNum = currentPage - 2 + i;
               }
-              
               return (
                 <Button
                   key={pageNum}
                   variant={currentPage === pageNum ? "default" : "outline"}
                   onClick={() => handlePageChange(pageNum)}
-                  className="w-10 h-10"
+                      className="w-8 h-8 sm:w-10 sm:h-10 text-sm"
                 >
                   {pageNum}
                 </Button>
-              )
+                  );
             })}
+              </div>
             
             <Button
               variant="outline"
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
+                className="w-full sm:w-auto"
             >
               Next
               <ChevronRight className="w-4 h-4" />
@@ -318,6 +351,7 @@ export default function ProductsPage() {
           </div>
         )}
       </main>
+      </div>
     </div>
   )
 } 

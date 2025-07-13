@@ -22,7 +22,7 @@ export default function CartPage() {
         <div className="flex-1 flex flex-col gap-4">
           {items.map(item => (
             <div key={item.id} className="flex gap-3 items-center bg-white rounded-lg shadow-sm p-3 border">
-              <Image src={item.image} alt={item.name} width={64} height={64} className="rounded object-cover border w-16 h-16" />
+              <Image src={item.image} alt={item.name} width={64} height={64} className="rounded object-cover border w-16 h-16" style={{ width: '100%', height: 'auto' }} />
               <div className="flex-1">
                 <div className="font-semibold text-base mb-1 line-clamp-1">{item.name}</div>
                 <div className="text-secondary font-bold mb-1 text-xs">₹{item.price}</div>

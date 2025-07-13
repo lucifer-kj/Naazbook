@@ -110,12 +110,12 @@ export default function ProductCard({
             variant="ghost"
             size="icon"
             aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
-            className="absolute top-3 right-3 z-10 bg-white/80 backdrop-blur-sm hover:bg-white focus:ring-2 focus:ring-secondary"
+            className="absolute top-2 right-2 z-10 bg-white/80 backdrop-blur-sm hover:bg-white focus:ring-2 focus:ring-secondary w-10 h-10 md:w-12 md:h-12"
             onClick={handleWishlistToggle}
             disabled={wishlistLoading}
             tabIndex={0}
           >
-            <Heart className={`w-5 h-5 ${isInWishlist ? "fill-red-500 text-red-500" : "text-gray-600"}`} />
+            <Heart className={`w-6 h-6 md:w-7 md:h-7 ${isInWishlist ? "fill-red-500 text-red-500" : "text-gray-600"}`} />
           </Button>
         )}
 
@@ -131,7 +131,7 @@ export default function ProductCard({
                 src={product.images[0] || "/Images/Riyadh as-Salihin.jpg"}
                 alt={imageAlt}
                 fill
-                sizes="(max-width: 768px) 100vw, 300px"
+                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 40vw, 300px"
                 className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
                 priority={false}
               />
@@ -142,7 +142,7 @@ export default function ProductCard({
                 transition={{ duration: 0.25 }}
                 className="absolute inset-0 bg-gradient-to-t from-[rgba(212,168,83,0.85)] to-transparent flex items-end justify-center opacity-0 group-hover:opacity-100 transition-opacity"
               >
-                <span className="mb-4 px-4 py-2 rounded-full bg-white/90 text-[var(--islamic-green)] font-semibold shadow-lg text-sm">
+                <span className="mb-4 px-4 py-2 rounded-full bg-white/90 text-[var(--islamic-green)] font-semibold shadow-lg text-xs md:text-sm">
                   View Details
                 </span>
               </motion.div>
@@ -150,10 +150,10 @@ export default function ProductCard({
           </div>
         </Link>
 
-        <CardContent className="flex flex-col flex-1 justify-between p-4 min-h-[140px]">
+        <CardContent className="flex flex-col flex-1 justify-between p-3 md:p-4 min-h-[120px] md:min-h-[140px]">
           {/* Product Name - Clickable */}
           <Link href={`/products/${product.slug}`} tabIndex={0} className="block focus:outline-none focus:ring-2 focus:ring-secondary rounded">
-            <CardTitle className="text-base sm:text-lg font-bold mb-1 text-gray-900 group-hover:text-secondary transition-colors line-clamp-2 text-left">
+            <CardTitle className="text-sm md:text-lg font-bold mb-1 text-gray-900 group-hover:text-secondary transition-colors line-clamp-2 text-left">
               <span title={product.name}>{product.name}</span>
             </CardTitle>
           </Link>
@@ -165,7 +165,7 @@ export default function ProductCard({
           </div>
 
           {/* Price */}
-          <div className="text-secondary font-bold text-lg mb-2 text-left">
+          <div className="text-secondary font-bold text-base md:text-lg mb-2 text-left">
             {formatPrice(product.price)}
           </div>
 
@@ -173,7 +173,7 @@ export default function ProductCard({
           <div className="w-full mt-auto">
             <Button
               onClick={handleAddToCart}
-              className="w-full bg-secondary hover:bg-secondary/90 text-white font-semibold py-2 transition-all duration-200 flex items-center justify-center"
+              className="w-full bg-secondary hover:bg-secondary/90 text-white font-semibold py-2 md:py-2.5 text-sm md:text-base transition-all duration-200 flex items-center justify-center"
               disabled={!inStock || cartLoading}
               aria-disabled={!inStock || cartLoading}
               aria-label={inStock ? "Add to cart" : "Out of stock"}

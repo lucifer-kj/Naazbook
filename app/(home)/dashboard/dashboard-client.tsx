@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useRouter } from 'next/navigation'
 import { 
   User, MapPin, Heart, 
-  Star, CreditCard, ChevronRight, ShoppingBag
+  Star, CreditCard, ChevronRight, ShoppingBag, Menu
 } from 'lucide-react'
 import { Decimal } from '@prisma/client/runtime/library'
 import { GlassCard, GlassButton, GlassBadge } from "@/components/ui/glass-card"
@@ -67,6 +67,7 @@ export default function DashboardClient({
   const [addresses] = useState<Address[]>(initialAddresses)
   const [wishlist] = useState<WishlistItem[]>(initialWishlist)
   const router = useRouter()
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const menuItems = [
     {
@@ -133,34 +134,28 @@ export default function DashboardClient({
 
   return (
     <div className="w-full space-y-8">
-      {/* User Welcome Banner - Liquid glass effect */}
-      <GlassCard gradient={true} gradientColors="from-primary/30 to-secondary/20">
-        <div className="px-6 py-8 text-center md:text-left md:flex md:justify-between md:items-center">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-              Hello, {user?.name || 'User'}
-            </h1>
-            <p className="mt-1 text-white/80">Welcome to your dashboard</p>
-          </div>
-          <div className="hidden md:block">
-            <div className="bg-white/20 backdrop-blur-md rounded-full px-5 py-2 text-white font-medium shadow-inner">
-              {initialOrders.length} Orders • {initialWishlist.length} Saved Items
-            </div>
-          </div>
-        </div>
-      </GlassCard>
-
-      {/* Main Dashboard Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Left sidebar - Navigation Menu */}
-        <div className="md:col-span-1">
-          <div className="space-y-3">
+      {/* Mobile Sidebar Toggle */}
+      <div className="md:hidden flex justify-between items-center mb-4 px-2">
+        <h2 className="text-xl font-bold">Dashboard</h2>
+        <button
+          className="p-2 rounded-md bg-white/80 border border-gray-200 shadow"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          aria-label="Open dashboard menu"
+        >
+          <Menu className="w-6 h-6 text-[var(--islamic-green)]" />
+        </button>
+      </div>
+      <div className="flex flex-col md:grid md:grid-cols-3 gap-6">
+        {/* Sidebar - mobile overlay */}
+        <div className={`fixed inset-0 z-40 bg-black/30 transition-opacity ${sidebarOpen ? 'block' : 'hidden'} md:hidden`} onClick={() => setSidebarOpen(false)} />
+        <aside className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:static md:translate-x-0 md:col-span-1 md:h-auto md:w-auto md:bg-transparent md:shadow-none`}>
+          <div className="p-4 md:p-0 space-y-3">
             {menuItems.map((item) => (
               <GlassCard 
                 key={item.id}
                 gradient={item.id === 'overview'}
-                onClick={() => handleNavigate(item.href)}
-                className="bg-white dark:bg-slate-800/50"
+                onClick={() => { handleNavigate(item.href); setSidebarOpen(false); }}
+                className="bg-white dark:bg-slate-800/50 cursor-pointer"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -181,10 +176,27 @@ export default function DashboardClient({
               </GlassCard>
             ))}
           </div>
-        </div>
+        </aside>
+        {/* Main Content */}
+        <main className="flex-1 md:col-span-2 space-y-6 mt-4 md:mt-0">
+          {/* User Welcome Banner - Liquid glass effect */}
+          <GlassCard gradient={true} gradientColors="from-primary/30 to-secondary/20">
+            <div className="px-6 py-8 text-center md:text-left md:flex md:justify-between md:items-center">
+              <div>
+                <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+                  Hello, {user?.name || 'User'}
+                </h1>
+                <p className="mt-1 text-white/80">Welcome to your dashboard</p>
+              </div>
+              <div className="hidden md:block">
+                <div className="bg-white/20 backdrop-blur-md rounded-full px-5 py-2 text-white font-medium shadow-inner">
+                  {initialOrders.length} Orders • {initialWishlist.length} Saved Items
+                </div>
+              </div>
+            </div>
+          </GlassCard>
 
-        {/* Right Content - Recent Activity */}
-        <div className="md:col-span-2 space-y-6">
+          {/* Main Dashboard Grid */}
           {/* Recent Orders Preview */}
           {orders.length > 0 && (
             <GlassCard className="bg-white dark:bg-slate-800/50">
@@ -324,7 +336,7 @@ export default function DashboardClient({
               </div>
             </GlassCard>
           )}
-        </div>
+        </main>
       </div>
     </div>
   )

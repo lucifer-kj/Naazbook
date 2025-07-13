@@ -412,3 +412,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   outline-offset: 2px;
   box-shadow: 0 0 0 3px var(--islamic-gold-dark);
 }
+
+@keyframes ticker-scroll {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+.ticker-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker-scroll 24s linear infinite;
+}

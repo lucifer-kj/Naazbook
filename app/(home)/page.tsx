@@ -8,32 +8,7 @@ import { motion } from "framer-motion";
 
 const HERO_BG = "/Images/Image+Background.jpg";
 
-const featuredBooks = [
-  {
-    image: "/Images/Sahih Al-Bukhari.jpg",
-    title: "Sahih Al-Bukhari",
-    author: "Imam Bukhari",
-    description: "Authentic collection of Prophet's sayings",
-    rating: 5,
-    highlight: false,
-  },
-  {
-    image: "/Images/Tafseer Ibn Kathir.jpg",
-    title: "Tafseer Ibn Kathir",
-    author: "Ibn Kathir",
-    description: "Comprehensive Quranic commentary",
-    rating: 5,
-    highlight: false,
-  },
-  {
-    image: "/Images/Riyadh as-Salihin.jpg",
-    title: "Riyadh as-Salihin",
-    author: "Imam Nawawi",
-    description: "Gardens of the righteous collection",
-    rating: 5,
-    highlight: true,
-  },
-];
+// Remove featuredBooks array
 
 const LEGACY_IMAGE = "/Images/About Naaz Book Depot.jpg";
 
@@ -56,31 +31,31 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-[var(--islamic-green)]/80" />
         <div className="container mx-auto px-4 relative z-10 flex flex-col lg:flex-row items-center justify-between py-16 gap-8">
           {/* Left: Main Content */}
-          <div className="max-w-2xl text-left flex-1">
-            <h1 className="text-5xl md:text-6xl font-headings font-bold text-white mb-4 drop-shadow-lg">
+          <div className="max-w-2xl sm:text-left text-center flex-1">
+            <h1 className="text-5xl sm:text-6xl font-headings font-bold text-white mb-4 drop-shadow-lg">
               Naaz Book Depot
             </h1>
             <p className="italic text-xl md:text-2xl text-[var(--islamic-gold)] mb-4 font-serif">
               &quot;Publishing the Light of Knowledge since 1967&quot;
             </p>
-            <p className="text-lg md:text-xl text-white mb-8 max-w-xl">
+            <p className="text-lg md:text-2xl text-white mb-8 max-w-xl">
               A pioneering publishing company since 1967, specializing in authentic Islamic literature and the Qur&apos;an in multiple languages, serving the global Muslim community.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/about">
-                <Button className="btn-islamic bg-[var(--islamic-gold)] text-[var(--islamic-green)] font-bold px-8 py-3 text-lg shadow-md hover:bg-[var(--islamic-gold-dark)]">
+                <Button className="btn-islamic bg-[var(--islamic-gold)] text-[var(--islamic-green)] font-bold px-8 py-3 text-lg shadow-md hover:bg-[var(--islamic-gold-dark)] sm:w-auto w-full">
                   Discover Our Legacy
                 </Button>
               </Link>
               <Link href="/products">
-                <Button variant="outline" className="border-2 border-[var(--islamic-gold)] text-white font-bold px-8 py-3 text-lg hover:bg-[var(--islamic-gold)] hover:text-[var(--islamic-green)]">
+                <Button variant="outline" className="border-2 border-[var(--islamic-gold)] text-white font-bold px-8 py-3 text-lg hover:bg-[var(--islamic-gold)] hover:text-[var(--islamic-green)] sm:w-auto w-full">
                   Explore Books
                 </Button>
               </Link>
             </div>
           </div>
           {/* Right: Quranic Verse Block */}
-          <div className="flex-1 flex justify-end w-full max-w-md">
+          <div className="flex-1 flex justify-end w-full max-w-md hidden md:flex">
             <motion.div
               className="glass-card p-8 rounded-2xl shadow-lg w-full max-w-md text-right border-2 border-[var(--islamic-gold)]"
               style={{ boxShadow: '0 4px 32px 0 rgba(212,168,83,0.10)', backgroundColor: 'rgba(248,246,243,0.7)' }}
@@ -112,44 +87,38 @@ export default function HomePage() {
       {/* Featured Islamic Books Section */}
       <section className="bg-[#F8F6F3] py-20">
         <div className="container mx-auto px-4">
-          <h2 className="text-5xl md:text-6xl font-headings font-bold text-[var(--islamic-green)] text-center mb-4">Featured Islamic Books</h2>
+          <h2 className="text-5xl md:text-6xl font-headings font-bold text-[var(--islamic-green)] text-center mb-4">Shop by Category</h2>
           <div className="flex justify-center mb-6">
             <div className="h-1 w-20 bg-[var(--islamic-gold)] rounded" />
           </div>
           <p className="text-lg text-center text-[var(--charcoal)]/70 mb-12 max-w-2xl mx-auto">
-            Discover our carefully curated collection of authentic Islamic literature
+            Explore our curated categories for all your needs
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {featuredBooks.map((book, idx) => (
-              <motion.div
-                key={book.title}
-                className="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center transition hover:shadow-xl m-2"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.6, delay: idx * 0.18, type: 'spring', stiffness: 60 }}
-              >
-                <div className="w-full flex justify-center mb-12">
-                  <Image
-                    src={book.image}
-                    alt={book.title}
-                    width={180}
-                    height={240}
-                    className="rounded-lg object-contain shadow"
-                  />
-                </div>
-                <h3 className={`text-lg font-headings font-bold mb-1 ${book.highlight ? 'text-[var(--islamic-gold)]' : 'text-[var(--islamic-green)]'}`}>{book.title}</h3>
-                <div className="text-[var(--islamic-green)] font-medium mb-1 text-sm">{book.author}</div>
-                <div className="text-[var(--charcoal)]/70 mb-2 text-sm">{book.description}</div>
-                {book.rating && (
-                  <div className="flex justify-center gap-1 mb-1">
-                    {Array.from({ length: book.rating }).map((_, i) => (
-                      <svg key={i} className="w-4 h-4 text-[var(--islamic-gold)]" fill="currentColor" viewBox="0 0 20 20"><polygon points="10,1 12.59,7.36 19.51,7.36 13.97,11.63 16.56,17.99 10,13.72 3.44,17.99 6.03,11.63 0.49,7.36 7.41,7.36" /></svg>
-                    ))}
-                  </div>
-                )}
-              </motion.div>
-            ))}
+            {/* Books Category */}
+            <Link href="/categories/books" className="group bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center transition hover:shadow-xl m-2 focus:outline-none focus:ring-2 focus:ring-[var(--islamic-gold)]">
+              <div className="w-full flex justify-center mb-8">
+                <Image src="/Images/Sahih Al-Bukhari.jpg" alt="Books" width={180} height={240} className="rounded-lg object-contain shadow group-hover:scale-105 transition" style={{ width: '100%', height: 'auto' }} />
+              </div>
+              <h3 className="text-lg font-headings font-bold mb-1 text-[var(--islamic-green)]">Books</h3>
+              <div className="text-[var(--charcoal)]/70 mb-2 text-sm">Authentic Islamic literature and Qur'an in multiple languages</div>
+            </Link>
+            {/* Perfumes Category */}
+            <Link href="/categories/perfumes" className="group bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center transition hover:shadow-xl m-2 focus:outline-none focus:ring-2 focus:ring-[var(--islamic-gold)]">
+              <div className="w-full flex justify-center mb-8">
+                <Image src="/Images/perfume.jpg" alt="Perfumes" width={180} height={180} className="rounded-lg object-contain shadow group-hover:scale-105 transition" style={{ width: '100%', height: 'auto' }} />
+              </div>
+              <h3 className="text-lg font-headings font-bold mb-1 text-[var(--islamic-green)]">Perfumes</h3>
+              <div className="text-[var(--charcoal)]/70 mb-2 text-sm">Premium attar and fragrances for every occasion</div>
+            </Link>
+            {/* Rehal Category */}
+            <Link href="/categories/rehal" className="group bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center transition hover:shadow-xl m-2 focus:outline-none focus:ring-2 focus:ring-[var(--islamic-gold)]">
+              <div className="w-full flex justify-center mb-8">
+                <Image src="/Images/rehal.jpg" alt="Rehal (Quran Stand)" width={180} height={180} className="rounded-lg object-contain shadow group-hover:scale-105 transition" style={{ width: '100%', height: 'auto' }} />
+              </div>
+              <h3 className="text-lg font-headings font-bold mb-1 text-[var(--islamic-green)]">Rehal (Quran Stand)</h3>
+              <div className="text-[var(--charcoal)]/70 mb-2 text-sm">Beautifully crafted stands for the Holy Qur'an</div>
+            </Link>
           </div>
         </div>
       </section>
@@ -183,6 +152,7 @@ export default function HomePage() {
                 height={360}
                 className="object-cover w-full h-full"
                 priority
+                style={{ width: '100%', height: 'auto' }}
               />
             </div>
             <div className="text-center text-[var(--islamic-green)] font-medium text-lg">Mohammad Irfan</div>

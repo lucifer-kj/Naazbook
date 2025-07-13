@@ -278,6 +278,7 @@ export default function ProductPage({ params }: PageProps) {
               alt={product.name}
               fill
               className="object-cover"
+              style={{ width: '100%', height: 'auto' }}
             />
           </div>
           {product.images.length > 1 && (
@@ -295,6 +296,7 @@ export default function ProductPage({ params }: PageProps) {
                     alt={`${product.name} ${index + 1}`}
                     fill
                     className="object-cover"
+                    style={{ width: '100%', height: 'auto' }}
                   />
                 </button>
               ))}
@@ -530,6 +532,7 @@ export default function ProductPage({ params }: PageProps) {
                           width={300} 
                           height={200} 
                           className="rounded-md object-cover mb-4" 
+                          style={{ width: '100%', height: 'auto' }}
                         />
                       </Link>
                       <CardTitle className="text-lg font-semibold mb-2 text-center">

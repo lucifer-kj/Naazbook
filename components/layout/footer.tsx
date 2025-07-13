@@ -8,7 +8,7 @@ export function Footer() {
   return (
     <footer className="bg-[var(--islamic-green)] text-white pt-8 relative">
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 mb-10">
           {/* About */}
           <div>
             <div className="flex items-center gap-3 mb-2">
@@ -64,8 +64,8 @@ export function Footer() {
           </div>
         </div>
         {/* Bottom bar */}
-        <div className="border-t border-white/20 pt-6 flex flex-col md:flex-row justify-between items-center text-xs gap-2">
-          <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-6">
+        <div className="border-t border-white/20 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
             <span>© 2024 Naaz Book Depot. All rights reserved.</span>
             <span className="text-[var(--islamic-gold)]">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</span>
           </div>
@@ -78,8 +78,9 @@ export function Footer() {
         {/* Floating Back-to-Top Button */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-6 left-6 z-50 bg-[var(--islamic-gold)] text-[var(--islamic-green)] w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-[var(--islamic-gold-dark)] transition"
+          className="fixed bottom-4 right-4 z-50 bg-[var(--islamic-gold)] text-[var(--islamic-green)] w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-[var(--islamic-gold-dark)] transition focus:outline-none focus:ring-2 focus:ring-white"
           aria-label="Back to top"
+          style={{ right: '1rem', bottom: '1rem' }}
         >
           <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" /></svg>
         </button>

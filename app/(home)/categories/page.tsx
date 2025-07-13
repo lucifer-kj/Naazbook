@@ -53,6 +53,7 @@ export default async function CategoriesPage() {
                       alt={category.name}
                       fill
                       className="object-cover"
+                      style={{ width: '100%', height: 'auto' }}
                     />
                   </div>
                 )}

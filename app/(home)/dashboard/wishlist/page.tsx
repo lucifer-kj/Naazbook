@@ -69,7 +69,8 @@ export default async function WishlistPage() {
                       alt={item.product.name} 
                       width={300} 
                       height={200} 
-                      className="w-full h-48 object-cover" 
+                      className="w-full h-48 object-cover"
+                      style={{ width: '100%', height: 'auto' }}
                     />
                   </div>
                   <CardContent className="p-4">

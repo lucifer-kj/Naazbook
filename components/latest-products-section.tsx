@@ -42,11 +42,11 @@ export default function LatestProductsSection({ products, loading = false }: Lat
                 ))}
           </div>
           {/* Mobile horizontal scroll with snap */}
-          <div className="sm:hidden flex gap-6 overflow-x-auto snap-x pb-2 -mx-4 px-4">
+          <div className="sm:hidden flex gap-4 overflow-x-auto snap-x pb-2 -mx-4 px-2 scrollbar-thin scrollbar-thumb-[var(--islamic-gold)] scrollbar-track-transparent">
             {(loading ? skeletonArray : visibleProducts).map((item, i) => (
               <motion.div
                 key={loading ? i : (item as Product).id}
-                className="min-w-[80vw] max-w-xs snap-center flex-shrink-0"
+                className="min-w-[85vw] max-w-xs snap-center flex-shrink-0"
                 whileHover={{ scale: 1.04, boxShadow: "0 8px 32px 0 rgba(153,41,234,0.12)" }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >

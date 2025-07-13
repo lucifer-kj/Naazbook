@@ -217,7 +217,7 @@ export default function OrderReviewPage() {
           {step === "upi" && (
             <div className="text-center space-y-6">
               <h2 className="text-xl font-bold">Scan to Pay with UPI</h2>
-              {upiQR && <Image src={upiQR} alt="UPI QR Code" width={192} height={192} className="mx-auto w-48 h-48" />}
+              {upiQR && <Image src={upiQR} alt="UPI QR Code" width={192} height={192} className="mx-auto w-48 h-48" style={{ width: '100%', height: 'auto' }} />}
               <a href={upiString} className="text-[var(--primary)] underline block">Open UPI App</a>
               <Button onClick={handlePaid} className="w-full bg-orange-500 hover:bg-orange-600 text-white text-base font-semibold py-3 rounded-md shadow-md">{isPlacing ? "Processing..." : "I've Paid"}</Button>
               <div className="text-gray-500 text-sm">After payment, click &quot;I&apos;ve Paid&quot; to notify the seller.</div>

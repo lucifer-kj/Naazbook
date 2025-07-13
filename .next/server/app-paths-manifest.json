@@ -1,0 +1,11 @@
+{
+  "/(home)/about/page": "app/(home)/about/page.js",
+  "/(home)/login/page": "app/(home)/login/page.js",
+  "/(home)/page": "app/(home)/page.js",
+  "/(home)/products/page": "app/(home)/products/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/categories/route": "app/api/categories/route.js",
+  "/api/products/route": "app/api/products/route.js",
+  "/auth/signin/page": "app/auth/signin/page.js"
+}

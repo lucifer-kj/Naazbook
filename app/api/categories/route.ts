@@ -15,7 +15,8 @@ export async function GET() {
       orderBy: { name: 'asc' },
     });
     return NextResponse.json(categories);
-  } catch {
+  } catch (error) {
+    console.error('Error in /api/categories:', error);
     return NextResponse.json({ error: 'Failed to fetch categories' }, { status: 500 });
   }
 } 

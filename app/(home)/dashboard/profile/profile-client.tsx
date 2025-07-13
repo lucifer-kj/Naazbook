@@ -53,6 +53,7 @@ export default function ProfileClient({ user, stats }: ProfileClientProps) {
                       width={112}
                       height={112}
                       className="h-full w-full object-cover"
+                      style={{ width: '100%', height: 'auto' }}
                     />
                   ) : (
                     <User className="h-12 w-12 text-primary/60" />
