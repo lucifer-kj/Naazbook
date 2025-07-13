@@ -1,16 +1,16 @@
 {
   "version": 1,
   "functions": {
-    "/api/auth/register": {},
     "/api/categories": {},
-    "/api/products/[slug]/reviews": {},
+    "/api/auth/register": {},
+    "/api/order/history": {},
+    "/api/products/[slug]/related": {},
     "/api/products/[slug]": {},
+    "/api/products/[slug]/reviews": {},
+    "/api/order": {},
     "/api/products/latest": {},
     "/api/products": {},
-    "/api/order/history": {},
     "/api/user/wishlist": {},
-    "/api/order": {},
-    "/api/products/[slug]/related": {},
     "/api/user/addresses": {}
   }
 }
