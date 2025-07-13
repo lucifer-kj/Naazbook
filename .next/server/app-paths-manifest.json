@@ -1,6 +1,9 @@
 {
   "/(home)/categories/[slug]/page": "app/(home)/categories/[slug]/page.js",
   "/(home)/dashboard/profile/page": "app/(home)/dashboard/profile/page.js",
+  "/(home)/login/page": "app/(home)/login/page.js",
   "/(home)/page": "app/(home)/page.js",
   "/_not-found/page": "app/_not-found/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/auth/signin/page": "app/auth/signin/page.js"
+}
