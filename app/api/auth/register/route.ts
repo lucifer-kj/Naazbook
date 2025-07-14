@@ -3,7 +3,27 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { hash } from "bcryptjs"
 
+const rateLimitMap = new Map<string, { count: number; last: number }>()
+const RATE_LIMIT = 5 // max 5 registrations per minute per IP
+const RATE_WINDOW = 60 * 1000 // per minute
+
+function checkRateLimit(ip: string) {
+  const now = Date.now()
+  const entry = rateLimitMap.get(ip)
+  if (!entry || now - entry.last > RATE_WINDOW) {
+    rateLimitMap.set(ip, { count: 1, last: now })
+    return false
+  }
+  if (entry.count >= RATE_LIMIT) return true
+  entry.count++
+  entry.last = now
+  rateLimitMap.set(ip, entry)
+  return false
+}
+
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get("x-forwarded-for") || "unknown"
+  if (checkRateLimit(ip)) return NextResponse.json({ error: "Too many requests" }, { status: 429 })
   try {
     const { name, email, password } = await req.json()
     if (!name || !email || !password) {

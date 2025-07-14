@@ -3,6 +3,24 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { auth } from '@/auth';
 
+const rateLimitMap = new Map<string, { count: number; last: number }>()
+const RATE_LIMIT = 5 // max 5 reviews per minute
+const RATE_WINDOW = 60 * 1000 // per minute
+
+function checkRateLimit(userId: string) {
+  const now = Date.now()
+  const entry = rateLimitMap.get(userId)
+  if (!entry || now - entry.last > RATE_WINDOW) {
+    rateLimitMap.set(userId, { count: 1, last: now })
+    return false
+  }
+  if (entry.count >= RATE_LIMIT) return true
+  entry.count++
+  entry.last = now
+  rateLimitMap.set(userId, entry)
+  return false
+}
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
@@ -45,6 +63,9 @@ export async function POST(
     const session = await auth();
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+    }
+    if (checkRateLimit(session.user.id)) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
     }
 
     const { slug } = await params;

@@ -3,6 +3,24 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
 
+const rateLimitMap = new Map<string, { count: number; last: number }>()
+const RATE_LIMIT = 10 // max 10 requests
+const RATE_WINDOW = 60 * 1000 // per minute
+
+function checkRateLimit(userId: string) {
+  const now = Date.now()
+  const entry = rateLimitMap.get(userId)
+  if (!entry || now - entry.last > RATE_WINDOW) {
+    rateLimitMap.set(userId, { count: 1, last: now })
+    return false
+  }
+  if (entry.count >= RATE_LIMIT) return true
+  entry.count++
+  entry.last = now
+  rateLimitMap.set(userId, entry)
+  return false
+}
+
 export async function GET() {
   try {
     const session = await auth()
@@ -29,6 +47,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   const session = await auth()
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  if (checkRateLimit(session.user.id)) return NextResponse.json({ error: "Too many requests" }, { status: 429 })
   const { productId } = await req.json()
   if (!productId) return NextResponse.json({ error: "Product ID required" }, { status: 400 })
   const exists = await prisma.wishlist.findFirst({ where: { userId: session.user.id, productId } })
@@ -40,6 +59,7 @@ export async function POST(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
   const session = await auth()
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  if (checkRateLimit(session.user.id)) return NextResponse.json({ error: "Too many requests" }, { status: 429 })
   const { productId } = await req.json()
   if (!productId) return NextResponse.json({ error: "Product ID required" }, { status: 400 })
   await prisma.wishlist.deleteMany({ where: { userId: session.user.id, productId } })

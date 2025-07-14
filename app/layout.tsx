@@ -10,6 +10,7 @@ import { ErrorBoundary } from "@/components/ui/error-boundary";
 import AnimatedLayoutClient from "@/components/providers/animated-layout-client";
 import RoutePrefetcher from "@/components/providers/route-prefetch";
 import StagewiseToolbarClient from '@/components/providers/stagewise-toolbar-client';
+import { ToastProvider } from "@/components/ui/toast"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,22 +58,24 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <StagewiseToolbarClient />
-        <AuthProvider>
-          <ClientRoot>
-            <div className="min-h-screen flex flex-col">
-              <Header />
-              <main className="flex-1">
-                <ErrorBoundary>
-                  <AnimatedLayoutClient>{children}</AnimatedLayoutClient>
-                </ErrorBoundary>
-              </main>
-              <Footer />
-              {/* Route prefetcher - improves navigation performance */}
-              <RoutePrefetcher />
-            </div>
-          </ClientRoot>
-        </AuthProvider>
+        <ToastProvider>
+          <StagewiseToolbarClient />
+          <AuthProvider>
+            <ClientRoot>
+              <div className="min-h-screen flex flex-col">
+                <Header />
+                <main className="flex-1">
+                  <ErrorBoundary>
+                    <AnimatedLayoutClient>{children}</AnimatedLayoutClient>
+                  </ErrorBoundary>
+                </main>
+                <Footer />
+                {/* Route prefetcher - improves navigation performance */}
+                <RoutePrefetcher />
+              </div>
+            </ClientRoot>
+          </AuthProvider>
+        </ToastProvider>
       </body>
     </html>
   );

@@ -2,6 +2,8 @@ import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import DashboardClient from './dashboard-client'
+import { signOut } from "next-auth/react"
+import { Button } from '@/components/ui/button'
 
 export default async function DashboardPage() {
   const session = await auth()
@@ -58,6 +60,9 @@ export default async function DashboardPage() {
       }}
     >
       <div className="container mx-auto max-w-7xl">
+        <div className="flex justify-end mb-4">
+          <Button onClick={() => signOut({ callbackUrl: "/" })} variant="outline">Logout</Button>
+        </div>
         <DashboardClient 
           user={userForClient}
           initialOrders={(user?.orders || []).map(order => ({

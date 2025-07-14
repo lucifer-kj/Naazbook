@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "functions": {
+    "/api/auth/register": {},
+    "/api/products/[slug]/related": {},
+    "/api/categories": {},
+    "/api/order/history": {},
+    "/api/products/[slug]/reviews": {},
+    "/api/products/[slug]": {},
+    "/api/order": {},
+    "/api/products": {},
+    "/api/products/latest": {},
+    "/api/user/addresses": {},
+    "/api/user/wishlist": {}
+  }
+}

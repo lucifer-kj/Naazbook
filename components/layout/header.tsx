@@ -171,13 +171,15 @@ export function Header() {
                       <Settings className="w-4 h-4" />
                       Profile
                     </Link>
-                    <button
-                      onClick={() => signOut({ callbackUrl: "/" })}
-                      className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 rounded w-full text-left text-red-600"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      Logout
-                    </button>
+                    {session?.user && (
+                      <button
+                        onClick={() => signOut({ callbackUrl: "/" })}
+                        className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 rounded w-full text-left text-red-600"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        Logout
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -317,7 +319,7 @@ export function Header() {
         <span className="ticker-marquee">
           📞 033 22350051 &nbsp;|&nbsp; 📞 033 22350960 &nbsp;|&nbsp; 📱 +91 91634 31395 &nbsp;|&nbsp; ✉️ naazgroupofficial@gmail.com &nbsp;|&nbsp; 📍 Visit us in Kolkata, West Bengal
         </span>
-      </div>
+        </div>
       {/* Original Banner for md+ */}
       <div className="hidden md:block w-full bg-[var(--islamic-green)] text-white text-sm font-medium px-8 py-2">
         <span>📞 033 22350051 &nbsp;|&nbsp; 📱 +91 91634 31395</span>

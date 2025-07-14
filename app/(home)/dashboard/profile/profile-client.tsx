@@ -3,6 +3,11 @@
 import { User, Mail, Calendar, Edit } from "lucide-react"
 import { GlassCard, GlassButton, GlassPanel } from "@/components/ui/glass-card"
 import Image from "next/image"
+import { useState } from "react"
+import { Dialog } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { useToast } from "@/components/ui/toast"
 
 interface ProfileClientProps {
   user: {
@@ -30,127 +35,230 @@ export default function ProfileClient({ user, stats }: ProfileClientProps) {
     addressesCount: typeof stats.addressesCount === 'number' ? stats.addressesCount : 0,
     wishlistCount: typeof stats.wishlistCount === 'number' ? stats.wishlistCount : 0,
   };
+  const [editOpen, setEditOpen] = useState(false)
+  const [pwOpen, setPwOpen] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
+  const [form, setForm] = useState({ name: user.name, email: user.email })
+  const [pwForm, setPwForm] = useState({ password: "", newPassword: "", confirm: "" })
+  const [loading, setLoading] = useState(false)
+  const { showToast } = useToast()
+
+  const handleEdit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    const res = await fetch("/api/user/profile", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form)
+    })
+    setLoading(false)
+    if (res.ok) {
+      showToast("Profile updated", "success")
+      setEditOpen(false)
+      window.location.reload()
+    } else {
+      const data = await res.json()
+      showToast(data.error || "Failed to update profile", "error")
+    }
+  }
+  const handlePw = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (pwForm.newPassword !== pwForm.confirm) {
+      showToast("Passwords do not match", "error")
+      return
+    }
+    setLoading(true)
+    const res = await fetch("/api/user/profile", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: pwForm.password, newPassword: pwForm.newPassword })
+    })
+    setLoading(false)
+    if (res.ok) {
+      showToast("Password changed", "success")
+      setPwOpen(false)
+      setPwForm({ password: "", newPassword: "", confirm: "" })
+    } else {
+      const data = await res.json()
+      showToast(data.error || "Failed to change password", "error")
+    }
+  }
+  const handleDelete = async () => {
+    setLoading(true)
+    const res = await fetch("/api/user/profile", { method: "DELETE" })
+    setLoading(false)
+    if (res.ok) {
+      showToast("Account deleted", "success")
+      window.location.href = "/"
+    } else {
+      const data = await res.json()
+      showToast(data.error || "Failed to delete account", "error")
+    }
+  }
   try {
     return (
-      <div 
-        className="min-h-screen py-12 px-4"
-        style={{
-          background: "linear-gradient(135deg, rgba(248,247,255,1) 0%, rgba(250,247,254,1) 35%, rgba(245,251,255,1) 100%)",
-          backgroundAttachment: "fixed"
-        }}
-      >
-        <div className="container mx-auto max-w-5xl">
-          {/* Profile Header */}
-          <GlassCard className="mb-8">
-            <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
-              {/* Avatar */}
-              <div className="relative">
-                <div className="h-28 w-28 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center shadow-lg border border-white/20">
-                  {safeImage ? (
-                    <Image 
-                      src={safeImage} 
-                      alt={safeName}
-                      width={112}
-                      height={112}
-                      className="h-full w-full object-cover"
-                      style={{ width: '100%', height: 'auto' }}
-                    />
-                  ) : (
-                    <User className="h-12 w-12 text-primary/60" />
-                  )}
-                </div>
-                <button className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-md hover:bg-gray-50 transition-colors">
-                  <Edit className="h-4 w-4 text-primary" />
-                </button>
-              </div>
-              {/* User Info */}
-              <div className="flex-1 text-center md:text-left">
-                <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-                  {safeName}
-                </h1>
-                <div className="mt-3 space-y-2">
-                  <div className="flex items-center justify-center md:justify-start gap-2 text-slate-700">
-                    <Mail className="h-4 w-4 text-primary" />
-                    <span>{safeEmail}</span>
+      <div>
+        <div 
+          className="min-h-screen py-12 px-4"
+          style={{
+            background: "linear-gradient(135deg, rgba(248,247,255,1) 0%, rgba(250,247,254,1) 35%, rgba(245,251,255,1) 100%)",
+            backgroundAttachment: "fixed"
+          }}
+        >
+          <div className="container mx-auto max-w-5xl">
+            {/* Profile Header */}
+            <GlassCard className="mb-8">
+              <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
+                {/* Avatar */}
+                <div className="relative">
+                  <div className="h-28 w-28 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center shadow-lg border border-white/20">
+                    {safeImage ? (
+                      <Image 
+                        src={safeImage} 
+                        alt={safeName}
+                        width={112}
+                        height={112}
+                        className="h-full w-full object-cover"
+                        style={{ width: '100%', height: 'auto' }}
+                      />
+                    ) : (
+                      <User className="h-12 w-12 text-primary/60" />
+                    )}
                   </div>
-                  <div className="flex items-center justify-center md:justify-start gap-2 text-slate-700">
-                    <Calendar className="h-4 w-4 text-primary" />
-                    <span>Member since {safeMemberSince}</span>
+                  <button className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-md hover:bg-gray-50 transition-colors">
+                    <Edit className="h-4 w-4 text-primary" />
+                  </button>
+                </div>
+                {/* User Info */}
+                <div className="flex-1 text-center md:text-left">
+                  <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+                    {safeName}
+                  </h1>
+                  <div className="mt-3 space-y-2">
+                    <div className="flex items-center justify-center md:justify-start gap-2 text-slate-700">
+                      <Mail className="h-4 w-4 text-primary" />
+                      <span>{safeEmail}</span>
+                    </div>
+                    <div className="flex items-center justify-center md:justify-start gap-2 text-slate-700">
+                      <Calendar className="h-4 w-4 text-primary" />
+                      <span>Member since {safeMemberSince}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              {/* Edit Profile Button */}
-              <div className="md:self-start">
-                <GlassButton 
-                  className="px-6 py-2.5 bg-gradient-to-r from-primary to-secondary text-white"
-                >
-                  Edit Profile
-                </GlassButton>
-              </div>
-            </div>
-          </GlassCard>
-          {/* Account Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <GlassCard className="text-center">
-              <div className="flex flex-col items-center">
-                <div className="p-3 rounded-full bg-blue-500/10 mb-3">
-                  <User className="h-6 w-6 text-blue-500" />
-                </div>
-                <p className="text-3xl font-bold text-slate-800">{safeStats.ordersCount}</p>
-                <p className="text-sm text-slate-600">Orders</p>
-              </div>
-            </GlassCard>
-            <GlassCard className="text-center">
-              <div className="flex flex-col items-center">
-                <div className="p-3 rounded-full bg-rose-500/10 mb-3">
-                  <Calendar className="h-6 w-6 text-rose-500" />
-                </div>
-                <p className="text-3xl font-bold text-slate-800">{safeStats.wishlistCount}</p>
-                <p className="text-sm text-slate-600">Wishlist Items</p>
-              </div>
-            </GlassCard>
-            <GlassCard className="text-center">
-              <div className="flex flex-col items-center">
-                <div className="p-3 rounded-full bg-emerald-500/10 mb-3">
-                  <Mail className="h-6 w-6 text-emerald-500" />
-                </div>
-                <p className="text-3xl font-bold text-slate-800">{safeStats.addressesCount}</p>
-                <p className="text-sm text-slate-600">Saved Addresses</p>
-              </div>
-            </GlassCard>
-          </div>
-          {/* Account Security */}
-          <GlassPanel>
-            <div className="p-6">
-              <h2 className="text-xl font-semibold mb-6">Account Security</h2>
-              <div className="space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200/20">
-                  <div>
-                    <p className="font-medium">Password</p>
-                    <p className="text-sm text-slate-500">Last changed: Never</p>
-                  </div>
-                  <GlassButton>Change Password</GlassButton>
-                </div>
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200/20">
-                  <div>
-                    <p className="font-medium">Two-Factor Authentication</p>
-                    <p className="text-sm text-slate-500">Not enabled</p>
-                  </div>
-                  <GlassButton>Enable 2FA</GlassButton>
-                </div>
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                  <div>
-                    <p className="font-medium">Account Deletion</p>
-                    <p className="text-sm text-slate-500">This action cannot be undone</p>
-                  </div>
-                  <GlassButton className="bg-rose-500/10 text-rose-500 hover:bg-rose-500/20">
-                    Delete Account
+                {/* Edit Profile Button */}
+                <div className="md:self-start">
+                  <GlassButton 
+                    className="px-6 py-2.5 bg-gradient-to-r from-primary to-secondary text-white"
+                    onClick={() => setEditOpen(true)}
+                  >
+                    Edit Profile
                   </GlassButton>
                 </div>
               </div>
+            </GlassCard>
+            {/* Account Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <GlassCard className="text-center">
+                <div className="flex flex-col items-center">
+                  <div className="p-3 rounded-full bg-blue-500/10 mb-3">
+                    <User className="h-6 w-6 text-blue-500" />
+                  </div>
+                  <p className="text-3xl font-bold text-slate-800">{safeStats.ordersCount}</p>
+                  <p className="text-sm text-slate-600">Orders</p>
+                </div>
+              </GlassCard>
+              <GlassCard className="text-center">
+                <div className="flex flex-col items-center">
+                  <div className="p-3 rounded-full bg-rose-500/10 mb-3">
+                    <Calendar className="h-6 w-6 text-rose-500" />
+                  </div>
+                  <p className="text-3xl font-bold text-slate-800">{safeStats.wishlistCount}</p>
+                  <p className="text-sm text-slate-600">Wishlist Items</p>
+                </div>
+              </GlassCard>
+              <GlassCard className="text-center">
+                <div className="flex flex-col items-center">
+                  <div className="p-3 rounded-full bg-emerald-500/10 mb-3">
+                    <Mail className="h-6 w-6 text-emerald-500" />
+                  </div>
+                  <p className="text-3xl font-bold text-slate-800">{safeStats.addressesCount}</p>
+                  <p className="text-sm text-slate-600">Saved Addresses</p>
+                </div>
+              </GlassCard>
             </div>
-          </GlassPanel>
+            {/* Account Security */}
+            <GlassPanel>
+              <div className="p-6">
+                <h2 className="text-xl font-semibold mb-6">Account Security</h2>
+                <div className="space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200/20">
+                    <div>
+                      <p className="font-medium">Password</p>
+                      <p className="text-sm text-slate-500">Last changed: Never</p>
+                    </div>
+                    <GlassButton onClick={() => setPwOpen(true)}>Change Password</GlassButton>
+                  </div>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200/20">
+                    <div>
+                      <p className="font-medium">Two-Factor Authentication</p>
+                      <p className="text-sm text-slate-500">Not enabled</p>
+                    </div>
+                    <GlassButton>Enable 2FA</GlassButton>
+                  </div>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                      <p className="font-medium">Account Deletion</p>
+                      <p className="text-sm text-slate-500">This action cannot be undone</p>
+                    </div>
+                    <GlassButton className="bg-rose-500/10 text-rose-500 hover:bg-rose-500/20" onClick={() => setDeleteOpen(true)}>
+                      Delete Account
+                    </GlassButton>
+                  </div>
+                </div>
+              </div>
+            </GlassPanel>
+          </div>
         </div>
+        {/* Edit Profile Dialog */}
+        <Dialog open={editOpen} onOpenChange={setEditOpen}>
+          <Dialog.Content>
+            <Dialog.Title>Edit Profile</Dialog.Title>
+            <form onSubmit={handleEdit} className="space-y-4">
+              <Input placeholder="Name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} required />
+              <Input placeholder="Email" type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} required />
+              <div className="flex gap-2 justify-end">
+                <Button type="button" variant="outline" onClick={() => setEditOpen(false)}>Cancel</Button>
+                <Button type="submit" disabled={loading}>{loading ? "Saving..." : "Save"}</Button>
+              </div>
+            </form>
+          </Dialog.Content>
+        </Dialog>
+        {/* Change Password Dialog */}
+        <Dialog open={pwOpen} onOpenChange={setPwOpen}>
+          <Dialog.Content>
+            <Dialog.Title>Change Password</Dialog.Title>
+            <form onSubmit={handlePw} className="space-y-4">
+              <Input placeholder="Current Password" type="password" value={pwForm.password} onChange={e => setPwForm(f => ({ ...f, password: e.target.value }))} required />
+              <Input placeholder="New Password" type="password" value={pwForm.newPassword} onChange={e => setPwForm(f => ({ ...f, newPassword: e.target.value }))} required />
+              <Input placeholder="Confirm New Password" type="password" value={pwForm.confirm} onChange={e => setPwForm(f => ({ ...f, confirm: e.target.value }))} required />
+              <div className="flex gap-2 justify-end">
+                <Button type="button" variant="outline" onClick={() => setPwOpen(false)}>Cancel</Button>
+                <Button type="submit" disabled={loading}>{loading ? "Saving..." : "Change"}</Button>
+              </div>
+            </form>
+          </Dialog.Content>
+        </Dialog>
+        {/* Delete Account Dialog */}
+        <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+          <Dialog.Content>
+            <Dialog.Title>Delete Account</Dialog.Title>
+            <p className="mb-4">Are you sure you want to delete your account? This action cannot be undone.</p>
+            <div className="flex gap-2 justify-end">
+              <Button type="button" variant="outline" onClick={() => setDeleteOpen(false)}>Cancel</Button>
+              <Button type="button" variant="destructive" onClick={handleDelete} disabled={loading}>{loading ? "Deleting..." : "Delete"}</Button>
+            </div>
+          </Dialog.Content>
+        </Dialog>
       </div>
     );
   } catch {

@@ -25,6 +25,24 @@ function generateOrderNumber() {
   return `ORD-${Date.now()}-${Math.floor(Math.random() * 10000)}`
 }
 
+const rateLimitMap = new Map<string, { count: number; last: number }>()
+const RATE_LIMIT = 5 // max 5 orders per minute
+const RATE_WINDOW = 60 * 1000 // per minute
+
+function checkRateLimit(userId: string) {
+  const now = Date.now()
+  const entry = rateLimitMap.get(userId)
+  if (!entry || now - entry.last > RATE_WINDOW) {
+    rateLimitMap.set(userId, { count: 1, last: now })
+    return false
+  }
+  if (entry.count >= RATE_LIMIT) return true
+  entry.count++
+  entry.last = now
+  rateLimitMap.set(userId, entry)
+  return false
+}
+
 export async function POST(req: NextRequest) {
   // CSRF validation (redundant with middleware, but double-check for defense-in-depth)
   const csrfHeader = req.headers.get('x-csrf-token');
@@ -37,6 +55,9 @@ export async function POST(req: NextRequest) {
     const session = await auth()
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+    if (checkRateLimit(session.user.id)) {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 })
     }
     const userId = session.user.id
     // Defensive check: ensure user exists
