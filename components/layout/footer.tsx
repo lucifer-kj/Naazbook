@@ -56,9 +56,9 @@ export function Footer() {
           {/* Contact Us */}
           <div>
             <h3 className="text-lg font-bold mb-3">Contact Us</h3>
-            <div className="flex items-start gap-2 mb-2"><span>📍</span><span>123 Chowringhee Road<br />Kolkata, West Bengal 700016<br />India</span></div>
+            <div className="flex items-start gap-2 mb-2"><span>📍</span><span>1 Ismail Madan Lane, Bolai Dutta St,<br /> Kolkata, West Bengal 700073<br />India</span></div>
             <div className="flex items-center gap-2 mb-2"><span>📞</span><span>+91 98765 43210</span></div>
-            <div className="flex items-center gap-2 mb-2"><span>✉️</span><span>info@naazbookdepot.com</span></div>
+            <div className="flex items-center gap-2 mb-2"><span>✉️</span><span>naazgroupofficial@gmail.com</span></div>
             <div className="mt-4">
               <span className="font-semibold">Follow Us</span>
               <div className="flex gap-3 mt-2">
@@ -83,15 +83,15 @@ export function Footer() {
         {/* Floating Back-to-Top Button */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-4 right-4 z-50 bg-[var(--islamic-gold)] text-[var(--islamic-green)] w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-[var(--islamic-gold-dark)] transition focus:outline-none focus:ring-2 focus:ring-white md:hidden"
+          className="fixed bottom-4 left-4 z-50 bg-[var(--islamic-gold)] text-[var(--islamic-green)] w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-[var(--islamic-gold-dark)] transition focus:outline-none focus:ring-2 focus:ring-white md:hidden"
           aria-label="Back to top"
-          style={{ right: '1rem', bottom: '1rem' }}
+          style={{ left: '1rem', bottom: '1rem' }}
         >
           <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" /></svg>
         </button>
         {/* Floating WhatsApp Button (mobile only) */}
         <a
-          href="https://wa.me/919876543210" // Replace with your WhatsApp number
+          href="https://wa.me/9163431395" // Replace with your WhatsApp number
           target="_blank"
           rel="noopener noreferrer"
           className="fixed bottom-20 right-4 z-50 bg-green-500 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-green-600 transition focus:outline-none focus:ring-2 focus:ring-white md:hidden"

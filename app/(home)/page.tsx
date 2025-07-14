@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import NewsletterSection from "@/components/newsletter-section";
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 const HERO_BG = "/Images/Image+Background.jpg";
 
@@ -35,20 +36,20 @@ export default function HomePage() {
             <h1 className="text-5xl sm:text-6xl font-headings font-bold text-white mb-4 drop-shadow-lg">
               Naaz Book Depot
             </h1>
-            <p className="italic text-xl md:text-2xl text-[var(--islamic-gold)] mb-4 font-serif">
-              &quot;Publishing the Light of Knowledge since 1967&quot;
+            <p className="italic text-xl md:text-2xl text-white/90 mb-4 font-sans font-light">
+              Publishing the Light of Knowledge since 1967<span className="ml-1 align-middle">|</span>
             </p>
-            <p className="text-lg md:text-2xl text-white mb-8 max-w-xl">
+            <p className="text-lg md:text-2xl text-white font-light leading-relaxed mb-8 max-w-xl">
               A pioneering publishing company since 1967, specializing in authentic Islamic literature and the Qur&apos;an in multiple languages, serving the global Muslim community.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/about">
-                <Button className="btn-islamic bg-[var(--islamic-gold)] text-[var(--islamic-green)] font-bold px-8 py-3 text-lg shadow-md hover:bg-[var(--islamic-gold-dark)] sm:w-auto w-full">
-                  Discover Our Legacy
+                <Button className="bg-[#C7A536] text-[var(--islamic-green)] font-bold px-8 py-3 text-lg shadow-md hover:bg-[#b89a2e] sm:w-auto w-full rounded-full flex items-center justify-center gap-2">
+                  Discover Our Legacy <ArrowRight className="w-5 h-5 ml-1" />
                 </Button>
               </Link>
               <Link href="/products">
-                <Button variant="outline" className="border-2 border-[var(--islamic-gold)] text-white font-bold px-8 py-3 text-lg hover:bg-[var(--islamic-gold)] hover:text-[var(--islamic-green)] sm:w-auto w-full">
+                <Button variant="outline" className="border-2 border-[#C7A536] text-white font-bold px-8 py-3 text-lg hover:bg-[#C7A536] hover:text-[var(--islamic-green)] sm:w-auto w-full rounded-full flex items-center justify-center gap-2">
                   Explore Books
                 </Button>
               </Link>
