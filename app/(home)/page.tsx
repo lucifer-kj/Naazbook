@@ -144,7 +144,7 @@ export default function HomePage() {
           </div>
           {/* Right: Image and Caption */}
           <div className="flex flex-col items-center"> 
-            <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-lg mb-4 ml-10 md:ml-0">
+            <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-lg lg:mb-4 sm:mx-5">
               <Image
                 src={LEGACY_IMAGE}
                 alt="Naaz Book Depot Founder"
