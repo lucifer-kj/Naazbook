@@ -38,7 +38,7 @@ export default function AboutPage() {
         <div className="bg-[#F6F1E7] rounded-2xl shadow-lg p-4 flex flex-col items-center w-full max-w-xs mx-auto mb-6">
           <div className="w-full rounded-xl overflow-hidden mb-3">
             <Image
-              src="/Images/IMG-20250626-WA0016.jpg"
+              src="/Images/About Naaz Book Depot.jpg"
               alt="MD Irfan"
               width={320}
               height={220}

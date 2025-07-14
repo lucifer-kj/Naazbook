@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import {ShoppingCart, User as UserIcon, LogOut, Settings, Menu, X, ChevronDown, Phone } from "lucide-react";
+import {ShoppingCart, User as UserIcon, LogOut, Settings, Menu, X, ChevronDown} from "lucide-react";
 import { useCartStore } from "@/store/cart-store";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -78,32 +78,27 @@ export function Header() {
 
   return (
     <>
-      {/* Top Contact Bar (Mobile Only) */}
-      <div className="block md:hidden bg-[var(--islamic-green)] text-white text-sm py-1 px-4 flex items-center justify-center gap-4">
-        <div className="flex items-center gap-1">
-          <Phone className="w-4 h-4 mr-1" />
-          <span>+91 90510 85118</span>
-        </div>
-        <span className="mx-2">|</span>
-        <div className="flex items-center gap-1">
-          <Phone className="w-4 h-4 mr-1" />
-          <span>+91 91634 3...</span>
-        </div>
-      </div>
       <motion.header
         className="bg-[#F8F6F3] sticky top-0 z-50 transition-shadow border-b border-[var(--islamic-green)]/10"
         initial={false}
         animate={{ boxShadow: "0 0px 0px 0 rgba(0,0,0,0)" }}
         transition={{ duration: 0.2 }}
       >
-        <div className="container mx-auto px-4 flex items-center h-16 md:h-24 justify-between">
+        <div className="container mx-auto px-4 flex items-center h-20 md:h-24 sm:py-2 justify-between">
           {/* Logo and Brand */}
           <Link href="/" className="flex items-center gap-2 md:gap-4">
-            <Image src="/Images/Naaz Book Depot Logo.svg" alt="Naaz Book Depot Logo" width={48} height={48} className="h-8 w-8 md:h-12 md:w-12" />
-            <div className="flex flex-col leading-tight">
-              <span className="text-lg md:text-3xl font-headings font-bold text-[var(--islamic-green)] leading-none transition">Naaz</span>
-              <span className="text-lg md:text-3xl font-headings font-bold text-[var(--islamic-green)] leading-none transition">Book</span>
-              <span className="text-lg md:text-3xl font-headings font-bold text-[var(--islamic-green)] leading-none transition">Depot</span>
+            <Image src="/Images/Naaz Book Depot Logo.svg" alt="Naaz Book Depot Logo" width={64} height={64} className="h-16 w-16 md:h-12 md:w-12" />
+            {/* Mobile: stacked, Desktop: single line */}
+            <div className="flex flex-col leading-tight md:hidden justify-center">
+              <span className="text-xl font-headings font-bold text-[var(--islamic-green)] leading-none transition">Naaz</span>
+              <span className="text-xl font-headings font-bold text-[var(--islamic-green)] leading-none transition">Book</span>
+              <span className="text-xl font-headings font-bold text-[var(--islamic-green)] leading-none transition">Depot</span>
+            </div>
+            {/* Desktop: original stacked style restored */}
+            <div className="hidden md:flex flex-col leading-tight">
+              <span className="text-3xl font-headings font-bold text-[var(--islamic-green)] leading-none transition">Naaz</span>
+              <span className="text-3xl font-headings font-bold text-[var(--islamic-green)] leading-none transition">Book</span>
+              <span className="text-3xl font-headings font-bold text-[var(--islamic-green)] leading-none transition">Depot</span>
             </div>
           </Link>
 
@@ -149,6 +144,17 @@ export function Header() {
 
           {/* Right Side Icons */}
           <div className="flex items-center gap-4 md:gap-6">
+            {/* Search icon for md+ */}
+            <button className="hidden md:inline p-2 text-[var(--islamic-green)] hover:text-[var(--islamic-gold)]" aria-label="Search">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 md:w-7 md:h-7">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+              </svg>
+            </button>
+            {/* Profile Icon (always visible) */}
+            <Link href="/auth/signin" className="p-2 text-[var(--islamic-green)] hover:text-[var(--islamic-gold)]">
+              <UserIcon className="w-6 h-6 md:w-7 md:h-7" />
+            </Link>
+            {/* Cart Icon (always visible) */}
             <Link href="/cart" className="relative p-2 text-[var(--islamic-green)] hover:text-[var(--islamic-gold)]">
               <ShoppingCart className="w-6 h-6 md:w-7 md:h-7" />
               {cartCount > 0 && (
@@ -157,11 +163,7 @@ export function Header() {
                 </span>
               )}
             </Link>
-            {/* Profile Icon (replaces search) */}
-            <Link href="/auth/signin" className="p-2 text-[var(--islamic-green)] hover:text-[var(--islamic-gold)]">
-              <UserIcon className="w-6 h-6 md:w-7 md:h-7" />
-            </Link>
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button (mobile only) */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden p-2 text-[var(--islamic-green)] hover:text-[var(--islamic-gold)]"
@@ -292,9 +294,9 @@ export function Header() {
         </span>
         </div>
       {/* Original Banner for md+ */}
-      <div className="hidden md:block w-full bg-[var(--islamic-green)] text-white text-sm font-medium px-8 py-2">
+      <div className="hidden md:block w-full bg-[var(--islamic-green)] text-white text-sm font-medium text-center lg:justify-center lg:text-center px-8 py-2">
         <span>
-        📞 033 22350051 &nbsp;|&nbsp; 📞 033 22350960 &nbsp;|&nbsp; 📱 +91 91634 31395 &nbsp;|&nbsp; ✉️ naazgroupofficial@gmail.com &nbsp;|&nbsp; 📍 Visit us in Kolkata, West Bengal
+          📞 033 22350051 &nbsp;|&nbsp; 📞 033 22350960 &nbsp;|&nbsp; 📱 +91 91634 31395 &nbsp;|&nbsp; ✉️ naazgroupofficial@gmail.com &nbsp;|&nbsp; 📍 Visit us in Kolkata, West Bengal
         </span>
       </div>
     </>

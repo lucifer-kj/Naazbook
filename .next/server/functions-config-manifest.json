@@ -1,16 +1,16 @@
 {
   "version": 1,
   "functions": {
-    "/api/auth/[...nextauth]": {},
-    "/api/auth/register": {},
     "/api/categories": {},
+    "/api/auth/[...nextauth]": {},
     "/api/order/history": {},
+    "/api/auth/register": {},
     "/api/order": {},
     "/api/products/[slug]/related": {},
-    "/api/products/latest": {},
-    "/api/products/[slug]": {},
     "/api/products/[slug]/reviews": {},
+    "/api/products/[slug]": {},
     "/api/products": {},
+    "/api/products/latest": {},
     "/api/user/addresses": {},
     "/api/user/wishlist": {}
   }

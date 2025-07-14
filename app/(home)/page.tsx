@@ -99,7 +99,7 @@ export default function HomePage() {
             {/* Books Category */}
             <Link href="/categories/books" className="group bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center transition hover:shadow-xl m-2 focus:outline-none focus:ring-2 focus:ring-[var(--islamic-gold)]">
               <div className="w-full flex justify-center mb-8">
-                <Image src="/Images/Sahih Al-Bukhari.jpg" alt="Books" width={180} height={240} className="rounded-lg object-contain shadow group-hover:scale-105 transition" style={{ width: '100%', height: 'auto' }} />
+                <Image src="/Images/Books.jpg" alt="Books" width={180} height={240} className="rounded-lg object-contain shadow group-hover:scale-105 transition" style={{ width: '100%', height: 'auto' }} />
               </div>
               <h3 className="text-lg font-headings font-bold mb-1 text-[var(--islamic-green)]">Books</h3>
               <div className="text-[var(--charcoal)]/70 mb-2 text-sm">Authentic Islamic literature and Qur&apos;an in multiple languages</div>
@@ -107,7 +107,7 @@ export default function HomePage() {
             {/* Perfumes Category */}
             <Link href="/categories/perfumes" className="group bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center transition hover:shadow-xl m-2 focus:outline-none focus:ring-2 focus:ring-[var(--islamic-gold)]">
               <div className="w-full flex justify-center mb-8">
-                <Image src="/Images/perfume.jpg" alt="Perfumes" width={180} height={180} className="rounded-lg object-contain shadow group-hover:scale-105 transition" style={{ width: '100%', height: 'auto' }} />
+                <Image src="/Images/ittars.jpg" alt="Perfumes" width={180} height={180} className="rounded-lg object-contain shadow group-hover:scale-105 transition" style={{ width: '100%', height: 'auto' }} />
               </div>
               <h3 className="text-lg font-headings font-bold mb-1 text-[var(--islamic-green)]">Perfumes</h3>
               <div className="text-[var(--charcoal)]/70 mb-2 text-sm">Premium attar and fragrances for every occasion</div>
@@ -115,7 +115,7 @@ export default function HomePage() {
             {/* Rehal Category */}
             <Link href="/categories/rehal" className="group bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center transition hover:shadow-xl m-2 focus:outline-none focus:ring-2 focus:ring-[var(--islamic-gold)]">
               <div className="w-full flex justify-center mb-8">
-                <Image src="/Images/rehal.jpg" alt="Rehal (Quran Stand)" width={180} height={180} className="rounded-lg object-contain shadow group-hover:scale-105 transition" style={{ width: '100%', height: 'auto' }} />
+                <Image src="/Images/Rehals.jpg" alt="Rehal (Quran Stand)" width={180} height={180} className="rounded-lg object-contain shadow group-hover:scale-105 transition" style={{ width: '100%', height: 'auto' }} />
               </div>
               <h3 className="text-lg font-headings font-bold mb-1 text-[var(--islamic-green)]">Rehal (Quran Stand)</h3>
               <div className="text-[var(--charcoal)]/70 mb-2 text-sm">Beautifully crafted stands for the Holy Qur&apos;an</div>
