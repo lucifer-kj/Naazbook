@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "functions": {
+    "/api/auth/register": {},
+    "/api/auth/[...nextauth]": {},
+    "/api/order/history": {},
+    "/api/products/[slug]/related": {},
+    "/api/products/[slug]": {},
+    "/api/categories": {},
+    "/api/products/[slug]/reviews": {},
+    "/api/products/latest": {},
+    "/api/user/wishlist": {},
+    "/api/user/addresses": {},
+    "/api/products": {},
+    "/api/user/mfa": {},
+    "/api/order": {}
+  }
+}

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "prebuild": "node scripts/build-clean.js",
     "dev": "next dev --turbopack",
     "build": "npm run prisma:generate && next build",
     "build:skip-prisma": "next build",

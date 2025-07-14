@@ -15,7 +15,8 @@ export default async function CategoryPage({ params }: PageProps) {
   const { slug } = await params;
 
   // Parse sub-category from query param (SSR workaround)
-  const searchParams = parse(cookies().get('next-url')?.value || '', true).query;
+  const cookieStore = await cookies();
+  const searchParams = parse(cookieStore.get('next-url')?.value || '', true).query;
   const selectedSub = typeof searchParams.sub === 'string' ? searchParams.sub : null;
 
   // Sub-categories for each main category
@@ -71,7 +72,7 @@ export default async function CategoryPage({ params }: PageProps) {
   } else if (slug === 'rehal' && selectedSub) {
     filteredProducts = filteredProducts.filter(p => p.subCategory === selectedSub);
   } else if (categoryInfo.subCategories && selectedSub) {
-    filteredProducts = filteredProducts.filter(p => p.categorySlug === selectedSub);
+    filteredProducts = filteredProducts.filter(p => p.subCategory === selectedSub);
   }
 
   return (
