@@ -3,7 +3,6 @@ import NextAuth from "next-auth"
 import { prisma } from "@/lib/prisma"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { compare } from "bcryptjs"
-import crypto from "crypto";
 
 // Enhanced types for better type safety
 interface ExtendedUser {
@@ -91,7 +90,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           userAgent = account.userAgent;
         }
         if (userAgent) {
-          token.fingerprint = crypto.createHash('sha256').update(userAgent).digest('hex');
+          const encoder = new TextEncoder();
+          const data = encoder.encode(userAgent);
+          token.fingerprint = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', data)))
+            .map(b => b.toString(16).padStart(2, '0'))
+            .join('');
         }
       }
       // Expiry check (NextAuth handles exp, but add custom error for demo)

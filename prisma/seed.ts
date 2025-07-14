@@ -72,6 +72,32 @@ async function main() {
     },
   })
 
+  // Create Perfume & Ittar category
+  const perfumeCategory = await prisma.category.upsert({
+    where: { slug: 'perfume-ittar' },
+    update: {},
+    create: {
+      name: 'Perfume & Ittar',
+      description: 'A curated collection of authentic perfumes and ittars.',
+      slug: 'perfume-ittar',
+      image: '/Images/ittars.jpeg',
+      isActive: true,
+    },
+  });
+
+  // Create Rehal category
+  const rehalCategory = await prisma.category.upsert({
+    where: { slug: 'rehal' },
+    update: {},
+    create: {
+      name: 'Rehal',
+      description: 'Beautifully crafted rehal (Quran stands) for your home and masjid.',
+      slug: 'rehal',
+      image: '/Images/Rehals.jpeg',
+      isActive: true,
+    },
+  });
+
   console.log('✅ Categories created')
 
   // Create products for Quran & Tafseer category
@@ -269,11 +295,129 @@ async function main() {
     }),
   ])
 
+  // Create products for Perfume & Ittar
+  console.log('Creating Perfume & Ittar products...');
+  const perfumeProducts = await Promise.all([
+    prisma.product.upsert({
+      where: { sku: 'PERFUME-001' },
+      update: {},
+      create: {
+        name: 'Classic Attar',
+        description: 'Traditional attar with a long-lasting fragrance.',
+        price: 15.99,
+        comparePrice: 19.99,
+        images: ['/Images/ittars.jpeg'],
+        sku: 'PERFUME-001',
+        stock: 50,
+        isActive: true,
+        isFeatured: true,
+        slug: 'classic-attar',
+        categoryId: perfumeCategory.id,
+        subCategory: 'attar',
+      },
+    }),
+    prisma.product.upsert({
+      where: { sku: 'PERFUME-002' },
+      update: {},
+      create: {
+        name: 'Rose Spray Perfume',
+        description: 'Refreshing rose spray perfume for daily use.',
+        price: 12.99,
+        comparePrice: 16.99,
+        images: ['/Images/ittars.jpeg'],
+        sku: 'PERFUME-002',
+        stock: 40,
+        isActive: true,
+        isFeatured: false,
+        slug: 'rose-spray-perfume',
+        categoryId: perfumeCategory.id,
+        subCategory: 'spray',
+      },
+    }),
+    prisma.product.upsert({
+      where: { sku: 'PERFUME-003' },
+      update: {},
+      create: {
+        name: 'Musk Perfume Oil',
+        description: 'Pure musk oil for a subtle, elegant scent.',
+        price: 18.99,
+        comparePrice: 22.99,
+        images: ['/Images/ittars.jpeg'],
+        sku: 'PERFUME-003',
+        stock: 30,
+        isActive: true,
+        isFeatured: false,
+        slug: 'musk-perfume-oil',
+        categoryId: perfumeCategory.id,
+        subCategory: 'oil',
+      },
+    }),
+    prisma.product.upsert({
+      where: { sku: 'PERFUME-004' },
+      update: {},
+      create: {
+        name: 'Combo Perfume Pack',
+        description: 'A combo pack of our best-selling perfumes.',
+        price: 29.99,
+        comparePrice: 39.99,
+        images: ['/Images/ittars.jpeg'],
+        sku: 'PERFUME-004',
+        stock: 20,
+        isActive: true,
+        isFeatured: false,
+        slug: 'combo-perfume-pack',
+        categoryId: perfumeCategory.id,
+        subCategory: 'combo',
+      },
+    }),
+  ]);
+
+  // Create products for Rehal
+  console.log('Creating Rehal products...');
+  const rehalProducts = await Promise.all([
+    prisma.product.upsert({
+      where: { sku: 'REHAL-001' },
+      update: {},
+      create: {
+        name: 'Wooden Rehal',
+        description: 'Handcrafted wooden rehal for Quran.',
+        price: 24.99,
+        comparePrice: 29.99,
+        images: ['/Images/Rehals.jpeg'],
+        sku: 'REHAL-001',
+        stock: 15,
+        isActive: true,
+        isFeatured: true,
+        slug: 'wooden-rehal',
+        categoryId: rehalCategory.id,
+        subCategory: 'wooden',
+      },
+    }),
+    prisma.product.upsert({
+      where: { sku: 'REHAL-002' },
+      update: {},
+      create: {
+        name: 'Plastic Rehal',
+        description: 'Durable plastic rehal, lightweight and portable.',
+        price: 14.99,
+        comparePrice: 19.99,
+        images: ['/Images/Rehals.jpeg'],
+        sku: 'REHAL-002',
+        stock: 25,
+        isActive: true,
+        isFeatured: false,
+        slug: 'plastic-rehal',
+        categoryId: rehalCategory.id,
+        subCategory: 'plastic',
+      },
+    }),
+  ]);
+
   console.log('✅ Products created')
 
   // Create sample reviews
   console.log('Creating sample reviews...')
-  const allProducts = [...quranProducts, ...hadithProducts, ...fiqhProducts]
+  const allProducts = [...quranProducts, ...hadithProducts, ...fiqhProducts, ...perfumeProducts, ...rehalProducts]
   for (const product of allProducts) {
     await prisma.review.upsert({
       where: {

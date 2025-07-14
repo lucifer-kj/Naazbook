@@ -59,6 +59,12 @@ export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
+  const csrfHeader = req.headers.get('x-csrf-token');
+  const csrfCookieObj = req.cookies.get('__Host-next-auth.csrf-token');
+  const csrfCookie = csrfCookieObj ? csrfCookieObj.value : undefined;
+  if (!csrfHeader || !csrfCookie || csrfHeader !== csrfCookie) {
+    return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+  }
   try {
     const session = await auth();
     if (!session?.user?.id) {

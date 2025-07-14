@@ -29,6 +29,12 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const csrfHeader = req.headers.get('x-csrf-token');
+  const csrfCookieObj = req.cookies.get('__Host-next-auth.csrf-token');
+  const csrfCookie = csrfCookieObj ? csrfCookieObj.value : undefined;
+  if (!csrfHeader || !csrfCookie || csrfHeader !== csrfCookie) {
+    return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+  }
   const session = await auth()
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   if (checkRateLimit(session.user.id)) return NextResponse.json({ error: "Too many requests" }, { status: 429 })

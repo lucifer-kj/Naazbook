@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import {ShoppingCart, User as UserIcon, LogOut, Settings, Menu, X, ChevronDown} from "lucide-react";
+import {ShoppingCart, User as UserIcon, LogOut, Settings, Menu, X, ChevronDown, Search} from "lucide-react";
 import { useCartStore } from "@/store/cart-store";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -62,18 +62,39 @@ export function Header() {
   };
 
   const navLinks = [
-    { href: "/", label: "Home" },
     { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
   ];
 
-  const productCategories = [
-    { href: "/categories/quraan", label: "Quran & Tafseer" },
-    { href: "/categories/hadith", label: "Hadith Collections" },
-    { href: "/categories/jurisprudence", label: "Islamic Jurisprudence" },
-    { href: "/categories/history", label: "Islamic History" },
-    { href: "/categories/children", label: "Children's Books" },
-    { href: "/categories/urdu", label: "Urdu Literature" },
+  // Define the new structure for the products dropdown
+  const productColumns = [
+    {
+      label: 'Books',
+      subCategories: [
+        { label: 'Quran & Tafseer', href: '/categories/quran-tafseer' },
+        { label: 'Hadith Collections', href: '/categories/hadith' },
+        { label: 'Islamic Jurisprudence', href: '/categories/fiqh' },
+        { label: 'Islamic History', href: '/categories/history' },
+        { label: "Children's Books", href: '/categories/children' },
+        { label: 'Urdu Literature', href: '/categories/urdu' },
+      ],
+    },
+    {
+      label: 'Perfume & Ittar',
+      subCategories: [
+        { label: 'Attar', href: '/categories/perfume-ittar?sub=attar' },
+        { label: 'Spray Perfume', href: '/categories/perfume-ittar?sub=spray' },
+        { label: 'Perfume Oil', href: '/categories/perfume-ittar?sub=oil' },
+        { label: 'Combo Packs', href: '/categories/perfume-ittar?sub=combo' },
+      ],
+    },
+    {
+      label: 'Rehal',
+      subCategories: [
+        { label: 'Wooden', href: '/categories/rehal?sub=wooden' },
+        { label: 'Plastic', href: '/categories/rehal?sub=plastic' },
+      ],
+    },
   ];
 
   return (
@@ -88,17 +109,9 @@ export function Header() {
           {/* Logo and Brand */}
           <Link href="/" className="flex items-center gap-2 md:gap-4">
             <Image src="/Images/Naaz Book Depot Logo.svg" alt="Naaz Book Depot Logo" width={64} height={64} className="h-16 w-16 md:h-12 md:w-12" />
-            {/* Mobile: stacked, Desktop: single line */}
-            <div className="flex flex-col leading-tight md:hidden justify-center">
-              <span className="text-xl font-headings font-bold text-[var(--islamic-green)] leading-none transition">Naaz</span>
-              <span className="text-xl font-headings font-bold text-[var(--islamic-green)] leading-none transition">Book</span>
-              <span className="text-xl font-headings font-bold text-[var(--islamic-green)] leading-none transition">Depot</span>
-            </div>
-            {/* Desktop: original stacked style restored */}
-            <div className="hidden md:flex flex-col leading-tight">
-              <span className="text-3xl font-headings font-bold text-[var(--islamic-green)] leading-none transition">Naaz</span>
-              <span className="text-3xl font-headings font-bold text-[var(--islamic-green)] leading-none transition">Book</span>
-              <span className="text-3xl font-headings font-bold text-[var(--islamic-green)] leading-none transition">Depot</span>
+            {/* Mobile and Desktop: single line */}
+            <div className="flex items-center leading-tight text-xl md:text-3xl font-headings font-bold text-[var(--islamic-green)] transition">
+              Naaz Book Depot
             </div>
           </Link>
 
@@ -119,20 +132,27 @@ export function Header() {
               </button>
               <div
                 ref={menuRef}
-                className={`absolute left-0 top-full mt-2 bg-white border border-[var(--islamic-green)]/20 rounded-lg shadow-lg transition z-20 min-w-[180px] ${productsOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+                className={`absolute left-0 top-full mt-2 bg-white border border-[var(--islamic-green)]/20 rounded-lg shadow-lg transition z-20 min-w-[600px] ${productsOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
                 onMouseEnter={() => setProductsOpen(true)}
                 onMouseLeave={handleMouseLeave}
                 tabIndex={-1}
               >
-                <ul className="py-2">
-                  {productCategories.map((category) => (
-                    <li key={category.href}>
-                      <Link href={category.href} className="block px-4 py-2 text-[var(--islamic-green)] hover:bg-[var(--islamic-gold)]/10">
-                        {category.label}
-                      </Link>
-                    </li>
+                <div className="grid grid-cols-3 gap-8 p-6 min-w-[600px]">
+                  {productColumns.map((col) => (
+                    <div key={col.label}>
+                      <div className="font-bold text-[var(--islamic-green)] mb-2 text-lg">{col.label}</div>
+                      <ul className="space-y-2">
+                        {col.subCategories.map((sub) => (
+                          <li key={sub.href}>
+                            <Link href={sub.href} className="block px-2 py-1 text-[var(--islamic-green)]/90 hover:bg-[var(--islamic-gold)]/10 rounded text-base">
+                              {sub.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             </div>
             {navLinks.map((link) => (
@@ -145,13 +165,13 @@ export function Header() {
           {/* Right Side Icons */}
           <div className="flex items-center gap-4 md:gap-6">
             {/* Search icon for md+ */}
-            <button className="hidden md:inline p-2 text-[var(--islamic-green)] hover:text-[var(--islamic-gold)]" aria-label="Search">
+            <Link href="/search" className="hidden md:inline p-2 text-[var(--islamic-green)] hover:text-[var(--islamic-gold)]" aria-label="Search">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 md:w-7 md:h-7">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
               </svg>
-            </button>
+            </Link>
             {/* Profile Icon (always visible) */}
-            <Link href="/auth/signin" className="p-2 text-[var(--islamic-green)] hover:text-[var(--islamic-gold)]">
+            <Link href="/login" className="p-2 text-[var(--islamic-green)] hover:text-[var(--islamic-gold)]">
               <UserIcon className="w-6 h-6 md:w-7 md:h-7" />
             </Link>
             {/* Cart Icon (always visible) */}
@@ -187,6 +207,26 @@ export function Header() {
               <div className="container mx-auto px-4 py-4">
                 {/* Mobile Navigation Links */}
                 <nav className="space-y-2">
+                  <form className="flex items-center gap-2 mb-4" onSubmit={e => { 
+                    e.preventDefault();
+                    if (typeof window !== 'undefined') {
+                      const searchInput = e.currentTarget.elements.namedItem('mobile-search') as HTMLInputElement;
+                      const query = searchInput?.value;
+                      if (query) {
+                        window.location.href = `/search?query=${encodeURIComponent(query)}`;
+                      }
+                    }
+                  }}>
+                    <input
+                      type="search"
+                      name="mobile-search"
+                      placeholder="Search products..."
+                      className="flex-1 px-4 py-2 rounded-full border border-gray-300 focus:border-secondary focus:ring-2 focus:ring-secondary/30 transition-all shadow-sm outline-none bg-white text-base"
+                    />
+                    <button type="submit" className="bg-secondary text-white rounded-full px-3 py-2 font-semibold shadow-md hover:bg-secondary/90 transition">
+                      <Search className="w-5 h-5" />
+                    </button>
+                  </form>
                   {navLinks.map((link) => (
                     <Link
                       key={link.href}
@@ -214,20 +254,28 @@ export function Header() {
                           animate={{ opacity: 1, height: "auto" }}
                           exit={{ opacity: 0, height: 0 }}
                           transition={{ duration: 0.2 }}
-                          className="pl-4 space-y-1"
+                          className="pl-4 space-y-4"
                         >
-                          {productCategories.map((category) => (
-                            <Link
-                              key={category.href}
-                              href={category.href}
-                              className="block py-2 px-4 text-sm text-[var(--islamic-green)] hover:bg-[var(--islamic-gold)]/10 rounded-lg"
-                              onClick={() => {
-                                setMobileMenuOpen(false);
-                                setMobileProductsOpen(false);
-                              }}
-                            >
-                              {category.label}
-                            </Link>
+                          {productColumns.map((col) => (
+                            <div key={col.label}>
+                              <div className="font-bold text-[var(--islamic-green)] mb-1">{col.label}</div>
+                              <ul className="ml-2 space-y-1">
+                                {col.subCategories.map((sub) => (
+                                  <li key={sub.href}>
+                                    <Link
+                                      href={sub.href}
+                                      className="block py-1 px-4 text-sm text-[var(--islamic-green)]/80 hover:bg-[var(--islamic-gold)]/10 rounded-lg"
+                                      onClick={() => {
+                                        setMobileMenuOpen(false);
+                                        setMobileProductsOpen(false);
+                                      }}
+                                    >
+                                      {sub.label}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
                           ))}
                         </motion.div>
                       )}

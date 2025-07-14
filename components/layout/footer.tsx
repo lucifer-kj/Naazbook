@@ -35,8 +35,8 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li><Link href="/">Home</Link></li>
               <li><Link href="/products">Islamic Books</Link></li>
-              <li className="opacity-60">Perfumes (Coming Soon)</li>
-              <li className="opacity-60">Essentials (Coming Soon)</li>
+              <li><Link href="/products">Perfumes</Link></li>
+              <li><Link href="/products">Essentials</Link></li>
               <li><Link href="/about">About Us</Link></li>
               <li><Link href="/contact">Contact</Link></li>
             </ul>
@@ -57,7 +57,7 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-bold mb-3">Contact Us</h3>
             <div className="flex items-start gap-2 mb-2"><span>📍</span><span>1 Ismail Madan Lane, Bolai Dutta St,<br /> Kolkata, West Bengal 700073<br />India</span></div>
-            <div className="flex items-center gap-2 mb-2"><span>📞</span><span>+91 98765 43210</span></div>
+            <div className="flex items-center gap-2 mb-2"><span>📞</span><span>+91 91634 31395</span></div>
             <div className="flex items-center gap-2 mb-2"><span>✉️</span><span>naazgroupofficial@gmail.com</span></div>
             <div className="mt-4">
               <span className="font-semibold">Follow Us</span>

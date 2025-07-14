@@ -22,6 +22,12 @@ function checkRateLimit(ip: string) {
 }
 
 export async function POST(req: NextRequest) {
+  const csrfHeader = req.headers.get('x-csrf-token');
+  const csrfCookieObj = req.cookies.get('__Host-next-auth.csrf-token');
+  const csrfCookie = csrfCookieObj ? csrfCookieObj.value : undefined;
+  if (!csrfHeader || !csrfCookie || csrfHeader !== csrfCookie) {
+    return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+  }
   const ip = req.headers.get("x-forwarded-for") || "unknown"
   if (checkRateLimit(ip)) return NextResponse.json({ error: "Too many requests" }, { status: 429 })
   try {

@@ -3,7 +3,7 @@
 import { User, Mail, Calendar, Edit } from "lucide-react"
 import { GlassCard, GlassButton, GlassPanel } from "@/components/ui/glass-card"
 import Image from "next/image"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Dialog } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -42,6 +42,68 @@ export default function ProfileClient({ user, stats }: ProfileClientProps) {
   const [pwForm, setPwForm] = useState({ password: "", newPassword: "", confirm: "" })
   const [loading, setLoading] = useState(false)
   const { showToast } = useToast()
+  const [mfaEnabled, setMfaEnabled] = useState<boolean | null>(null);
+  const [mfaLoading, setMfaLoading] = useState(false);
+  const [qr, setQr] = useState<string | null>(null);
+  const [secret, setSecret] = useState<string | null>(null);
+  const [code, setCode] = useState("");
+  const [showMfaSetup, setShowMfaSetup] = useState(false);
+
+  // Fetch MFA status on mount
+  useEffect(() => {
+    fetch("/api/user/profile")
+      .then(res => res.json())
+      .then(data => setMfaEnabled(data.mfaEnabled ?? false));
+  }, []);
+
+  // Enable MFA: get QR
+  const handleEnableMfa = async () => {
+    setMfaLoading(true);
+    const res = await fetch("/api/user/mfa", { method: "POST" });
+    if (res.ok) {
+      const data = await res.json();
+      setQr(data.qr);
+      setSecret(data.secret);
+      setShowMfaSetup(true);
+    } else {
+      showToast("Failed to start MFA setup", "error");
+    }
+    setMfaLoading(false);
+  };
+  // Verify MFA code
+  const handleVerifyMfa = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMfaLoading(true);
+    const res = await fetch("/api/user/mfa", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code }),
+    });
+    if (res.ok) {
+      showToast("MFA enabled!", "success");
+      setMfaEnabled(true);
+      setShowMfaSetup(false);
+      setQr(null);
+      setSecret(null);
+      setCode("");
+    } else {
+      const data = await res.json();
+      showToast(data.error || "Failed to enable MFA", "error");
+    }
+    setMfaLoading(false);
+  };
+  // Disable MFA
+  const handleDisableMfa = async () => {
+    setMfaLoading(true);
+    const res = await fetch("/api/user/mfa", { method: "DELETE" });
+    if (res.ok) {
+      showToast("MFA disabled", "success");
+      setMfaEnabled(false);
+    } else {
+      showToast("Failed to disable MFA", "error");
+    }
+    setMfaLoading(false);
+  };
 
   const handleEdit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -201,10 +263,47 @@ export default function ProfileClient({ user, stats }: ProfileClientProps) {
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200/20">
                     <div>
                       <p className="font-medium">Two-Factor Authentication</p>
-                      <p className="text-sm text-slate-500">Not enabled</p>
+                      <p className="text-sm text-slate-500">
+                        {mfaEnabled === null ? "Checking..." : mfaEnabled ? "Enabled (TOTP)" : "Not enabled"}
+                      </p>
                     </div>
-                    <GlassButton>Enable 2FA</GlassButton>
+                    {mfaEnabled ? (
+                      <GlassButton onClick={handleDisableMfa} disabled={mfaLoading}>
+                        {mfaLoading ? "Disabling..." : "Disable 2FA"}
+                      </GlassButton>
+                    ) : (
+                      <GlassButton onClick={handleEnableMfa} disabled={mfaLoading}>
+                        {mfaLoading ? "Loading..." : "Enable 2FA"}
+                      </GlassButton>
+                    )}
                   </div>
+                  {/* MFA Setup Dialog */}
+                  {showMfaSetup && (
+                    <Dialog open={showMfaSetup} onOpenChange={setShowMfaSetup}>
+                      <Dialog.Content>
+                        <Dialog.Title>Set up Two-Factor Authentication</Dialog.Title>
+                        <div className="flex flex-col items-center gap-4">
+                          {qr && <Image src={qr} alt="MFA QR Code" width={160} height={160} className="w-40 h-40" />}
+                          <p className="text-sm text-slate-600">Scan this QR code with Google Authenticator or a compatible app.</p>
+                          {secret && <p className="text-xs text-slate-500 break-all">Secret: {secret}</p>}
+                          <form onSubmit={handleVerifyMfa} className="w-full flex flex-col gap-3 mt-2">
+                            <Input
+                              placeholder="Enter 6-digit code"
+                              value={code}
+                              onChange={e => setCode(e.target.value)}
+                              required
+                              maxLength={6}
+                              pattern="[0-9]{6}"
+                            />
+                            <div className="flex gap-2 justify-end">
+                              <Button type="button" variant="outline" onClick={() => setShowMfaSetup(false)}>Cancel</Button>
+                              <Button type="submit" disabled={mfaLoading}>{mfaLoading ? "Verifying..." : "Verify & Enable"}</Button>
+                            </div>
+                          </form>
+                        </div>
+                      </Dialog.Content>
+                    </Dialog>
+                  )}
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
                       <p className="font-medium">Account Deletion</p>

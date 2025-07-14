@@ -24,6 +24,8 @@ model User {
   role          UserRole  @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  mfaEnabled    Boolean   @default(false)
+  mfaSecret     String?
 
   // Relations
   accounts  Account[]
@@ -110,6 +112,7 @@ model Product {
   categoryId   String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  subCategory  String? // For Perfume & Ittar and Rehal sub-categories
 
   // Relations
   category   Category    @relation(fields: [categoryId], references: [id])

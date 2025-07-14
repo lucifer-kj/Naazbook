@@ -7,11 +7,9 @@ import NewsletterSection from "@/components/newsletter-section";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
-const HERO_BG = "/Images/Image+Background.jpg";
+const LEGACY_IMAGE = "/Images/About.jpg";
 
 // Remove featuredBooks array
-
-const LEGACY_IMAGE = "/Images/About Naaz Book Depot.jpg";
 
 export default function HomePage() {
   return (
@@ -23,7 +21,7 @@ export default function HomePage() {
         <span className="islamic-pattern" aria-hidden="true" />
         <span className="absolute inset-0 bg-gradient-to-br from-[var(--islamic-green)]/90 via-[var(--islamic-green-light)]/80 to-[var(--islamic-gold)]/40 z-0" aria-hidden="true" />
         <Image
-          src={HERO_BG}
+          src="/Images/Image+Background.jpg"
           alt="Naaz Book Depot Hero Background"
           fill
           priority
@@ -99,7 +97,7 @@ export default function HomePage() {
             {/* Books Category */}
             <Link href="/categories/books" className="group bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center transition hover:shadow-xl m-2 focus:outline-none focus:ring-2 focus:ring-[var(--islamic-gold)]">
               <div className="w-full flex justify-center mb-8">
-                <Image src="/Images/Books.jpg" alt="Books" width={180} height={240} className="rounded-lg object-contain shadow group-hover:scale-105 transition" style={{ width: '100%', height: 'auto' }} />
+                <Image src="/Images/Books.jpeg" alt="Books" width={180} height={180} className="rounded-lg object-contain shadow group-hover:scale-105 transition" style={{ width: '100%', height: 'auto' }} />
               </div>
               <h3 className="text-lg font-headings font-bold mb-1 text-[var(--islamic-green)]">Books</h3>
               <div className="text-[var(--charcoal)]/70 mb-2 text-sm">Authentic Islamic literature and Qur&apos;an in multiple languages</div>
@@ -107,7 +105,7 @@ export default function HomePage() {
             {/* Perfumes Category */}
             <Link href="/categories/perfumes" className="group bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center transition hover:shadow-xl m-2 focus:outline-none focus:ring-2 focus:ring-[var(--islamic-gold)]">
               <div className="w-full flex justify-center mb-8">
-                <Image src="/Images/ittars.jpg" alt="Perfumes" width={180} height={180} className="rounded-lg object-contain shadow group-hover:scale-105 transition" style={{ width: '100%', height: 'auto' }} />
+                <Image src="/Images/ittars.jpeg" alt="Perfumes" width={180} height={180} className="rounded-lg object-contain shadow group-hover:scale-105 transition" style={{ width: '100%', height: 'auto' }} />
               </div>
               <h3 className="text-lg font-headings font-bold mb-1 text-[var(--islamic-green)]">Perfumes</h3>
               <div className="text-[var(--charcoal)]/70 mb-2 text-sm">Premium attar and fragrances for every occasion</div>
@@ -115,7 +113,7 @@ export default function HomePage() {
             {/* Rehal Category */}
             <Link href="/categories/rehal" className="group bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center transition hover:shadow-xl m-2 focus:outline-none focus:ring-2 focus:ring-[var(--islamic-gold)]">
               <div className="w-full flex justify-center mb-8">
-                <Image src="/Images/Rehals.jpg" alt="Rehal (Quran Stand)" width={180} height={180} className="rounded-lg object-contain shadow group-hover:scale-105 transition" style={{ width: '100%', height: 'auto' }} />
+                <Image src="/Images/Rehals.jpeg" alt="Rehal (Quran Stand)" width={180} height={180} className="rounded-lg object-contain shadow group-hover:scale-105 transition" style={{ width: '100%', height: 'auto' }} />
               </div>
               <h3 className="text-lg font-headings font-bold mb-1 text-[var(--islamic-green)]">Rehal (Quran Stand)</h3>
               <div className="text-[var(--charcoal)]/70 mb-2 text-sm">Beautifully crafted stands for the Holy Qur&apos;an</div>
@@ -129,7 +127,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center justify-center max-w-5xl mx-auto">
           {/* Left: Text Content */}
           <div>
-            <h2 className="text-2xl md:text-3xl font-headings font-bold text-[var(--islamic-green)] mb-4">A Legacy of Knowledge<br />Since 1967</h2>
+            <h2 className="text-4xl font-headings font-bold text-[var(--islamic-green)] mb-4">A Legacy of Knowledge<br />Since 1967</h2>
             <div className="h-1 w-20 bg-[var(--islamic-gold)] rounded mb-6" />
             <p className="text-lg text-[var(--charcoal)]/90 mb-6 max-w-xl">
               Founded in the heart of Kolkata, Naaz Book Depot has been a beacon of Islamic knowledge for over five decades. Our journey began with a simple mission: to make authentic Islamic literature accessible to every seeker of knowledge.
@@ -149,8 +147,8 @@ export default function HomePage() {
               <Image
                 src={LEGACY_IMAGE}
                 alt="Naaz Book Depot Founder"
-                width={480}
-                height={360}
+                width={380}
+                height={260}
                 className="object-cover w-full h-full"
                 priority
                 style={{ width: '100%', height: 'auto' }}
